@@ -1,30 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SectionHeading from './SectionHeading'
 
-export default function About({ bio, skills, status, username }) {
-  const [heatmapOk, setHeatmapOk] = useState(true)
-  const [statsOk, setStatsOk] = useState(true)
-  const [langsOk, setLangsOk] = useState(true)
+export default function About({ bio, skills, status, username, resumeUrl }) {
 
-  const statsParams = new URLSearchParams({
-    username,
-    show_icons: 'true',
-    theme: 'dark',
-    hide_border: 'true',
-    bg_color: '1c1f26',
-    title_color: 'e8a33d',
-    text_color: 'e8e6e1',
-    icon_color: '5fb3b3',
-  }).toString()
-  const langParams = new URLSearchParams({
-    username,
-    layout: 'compact',
-    theme: 'dark',
-    hide_border: 'true',
-    bg_color: '1c1f26',
-    title_color: 'e8a33d',
-    text_color: 'e8e6e1',
-  }).toString()
+  const [progress, setProgress] = useState(0)
+  const [running, setRunning] = useState(false)
+
+  useEffect(() => {
+    let t
+    if (running && progress < 100) {
+      t = setTimeout(() => setProgress(p => Math.min(100, p + Math.ceil((100 - p) / 6))), 120)
+    }
+    if (progress === 100 && running) {
+      setRunning(false)
+      // kick off resume download if a real URL is provided
+      try { if (resumeUrl && resumeUrl !== '#') window.open(resumeUrl, '_blank') } catch {}
+    }
+    return () => clearTimeout(t)
+  }, [running, progress])
 
   return (
     <section id="about" className="section">
@@ -51,53 +44,23 @@ export default function About({ bio, skills, status, username }) {
         </div>
 
         <div className="github-panel">
-          <div className="ls-header mono">$ git log --graph --contributions</div>
-          {status === 'ok' && (
-            <>
-              <div className="heatmap-wrap">
-                {heatmapOk ? (
-                  <img
-                    className="heatmap-img"
-                    src={`https://ghchart.rshah.org/e8a33d/${username}`}
-                    alt={`${username}'s GitHub contribution graph`}
-                    loading="lazy"
-                    onError={() => setHeatmapOk(false)}
-                  />
-                ) : (
-                  <p className="muted mono small">
-                    contribution graph unavailable right now — <a className="inline-link" href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer">view on GitHub</a>
-                  </p>
-                )}
+          <div className="ls-header mono">$ ./resume_download.cron</div>
+          <div className="terminal" style={{ marginTop: 12 }}>
+            <div className="terminal-titlebar">
+              <div className="dot dot-r" />
+              <div className="dot dot-y" />
+              <div className="dot dot-g" />
+              <div className="terminal-title mono">resume-downloader</div>
+            </div>
+            <div className={`terminal-body mono ${running ? 'decoding' : ''}`}>
+              <div className="line-prompt">$ curl -O resume.pdf</div>
+              <div className="line-output">{running ? `downloading... ${progress}%` : 'ready to run'}</div>
+              <div style={{ marginTop: 8 }}>
+                <button className="lookup-go" onClick={() => { if (!running) { setProgress(0); setRunning(true) } }}>{running ? 'running…' : 'run'}</button>
               </div>
-
-              {statsOk ? (
-                <img
-                  className="stats-img"
-                  src={`https://github-readme-stats.vercel.app/api?${statsParams}`}
-                  alt="GitHub stats"
-                  loading="lazy"
-                  onError={() => setStatsOk(false)}
-                />
-              ) : (
-                <p className="muted mono small">stats card unavailable right now.</p>
-              )}
-
-              {langsOk ? (
-                <img
-                  className="stats-img"
-                  src={`https://github-readme-stats.vercel.app/api/top-langs/?${langParams}`}
-                  alt="Most used languages"
-                  loading="lazy"
-                  onError={() => setLangsOk(false)}
-                />
-              ) : (
-                <p className="muted mono small">language breakdown unavailable right now.</p>
-              )}
-
-              <p className="muted mono small">refreshes live from github on every visit</p>
-            </>
-          )}
-          {status !== 'ok' && <p className="muted mono">waiting on github lookup…</p>}
+            </div>
+          </div>
+          <div style={{ marginTop: 10 }} className="muted small">This simulates a small terminal and will start the resume download when it reaches 100%.</div>
         </div>
       </div>
     </section>

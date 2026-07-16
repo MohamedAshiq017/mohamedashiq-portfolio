@@ -1,6 +1,6 @@
 export default function FeaturedProject({ project, liveRepo }) {
   if (!project) return null
-  const link = liveRepo?.html_url || null
+  const link = liveRepo?.html_url || project.repoUrl || null
 
   return (
     <div className="spotlight">

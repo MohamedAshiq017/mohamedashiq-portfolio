@@ -1,4 +1,5 @@
 import { langColor } from '../config'
+import { ExternalIcon } from './Icons'
 
 export default function ProjectCard({ repo, index, total, reorderMode, onDragStart, onDrop, onNudge, onOpen }) {
   return (
@@ -35,6 +36,11 @@ export default function ProjectCard({ repo, index, total, reorderMode, onDragSta
           )}
           <span className="meta-item">★ {repo.stargazers_count}</span>
           <span className="meta-item">⑂ {repo.forks_count}</span>
+          {repo.homepage && (
+            <a className="meta-item" href={repo.homepage} target="_blank" rel="noopener noreferrer">
+              <ExternalIcon /> live
+            </a>
+          )}
         </div>
       </button>
     </div>

@@ -37,6 +37,8 @@ export default function ProjectDialog({ repo, onClose }) {
 
   const ogImage = `https://opengraph.githubassets.com/1/${repo.full_name}`
 
+  const primaryImage = details?.readmeImages?.[0] || ogImage
+
   return (
     <div className="dialog-overlay" onClick={onClose}>
       <div
@@ -53,11 +55,19 @@ export default function ProjectDialog({ repo, onClose }) {
         {imageOk && (
           <img
             className="dialog-image"
-            src={ogImage}
+            src={primaryImage}
             alt={`${repo.name} preview`}
             loading="lazy"
             onError={() => setImageOk(false)}
           />
+        )}
+
+        {details?.readmeImages?.length > 1 && (
+          <div style={{ display: 'flex', gap: 8, padding: '10px 20px' }}>
+            {details.readmeImages.map((img, idx) => (
+              <img key={idx} src={img} alt={`${repo.name} ${idx}`} style={{ width: 80, height: 48, objectFit: 'cover', borderRadius: 6 }} loading="lazy" />
+            ))}
+          </div>
         )}
 
         <div className="dialog-body">

@@ -107,7 +107,6 @@ export const TABS = [
   { id: 'projects', label: 'projects.tsx' },
   { id: 'about', label: 'about.tsx' },
   { id: 'education', label: 'education.tsx' },
-  { id: 'recognition', label: 'recognition.tsx' },
   { id: 'contact', label: 'contact.tsx' },
 ]
 

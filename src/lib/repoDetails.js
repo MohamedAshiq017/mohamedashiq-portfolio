@@ -56,5 +56,34 @@ export async function fetchRepoDetails(fullName) {
     }
   }
 
-  return { languages, deps, dockerPreview, dockerized: Boolean(dockerPreview) }
+  // Try to pull images out of the README (best-effort). Prefer absolute URLs,
+  // fall back to a raw.githubusercontent.com master path for simple relative
+  // links so dialogs can show screenshots included in README files.
+  const readmeJson = await safeJson(fetch(`https://api.github.com/repos/${fullName}/readme`))
+  let readmeImages = []
+  if (readmeJson?.content) {
+    try {
+      const readme = decodeBase64(readmeJson.content)
+      const mdImgRe = /!\[[^\]]*\]\(([^)]+)\)/g
+      const htmlImgRe = /<img[^>]+src=["']([^"']+)["'][^>]*>/g
+      const set = new Set()
+      let m
+      while ((m = mdImgRe.exec(readme))) {
+        let url = m[1].split(/\s+/)[0]
+        if (!/^https?:\/\//i.test(url)) url = `https://raw.githubusercontent.com/${fullName}/master/${url.replace(/^\.\//, '')}`
+        set.add(url)
+      }
+      while ((m = htmlImgRe.exec(readme))) {
+        let url = m[1]
+        if (!/^https?:\/\//i.test(url)) url = `https://raw.githubusercontent.com/${fullName}/master/${url.replace(/^\.\//, '')}`
+        set.add(url)
+      }
+      readmeImages = Array.from(set).slice(0, 6)
+    } catch {
+      readmeImages = []
+    }
+  }
+
+  return { languages, deps, dockerPreview, dockerized: Boolean(dockerPreview), readmeImages }
 }
+

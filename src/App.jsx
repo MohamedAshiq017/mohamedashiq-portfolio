@@ -6,6 +6,7 @@ import { useGithub, defaultOrder } from './hooks/useGithub'
 import Nav from './components/Nav'
 import Hero from './components/Hero'
 import Experience from './components/Experience'
+import Education from './components/Education'
 import Projects from './components/Projects'
 import About from './components/About'
 import Contact from './components/Contact'
@@ -40,7 +41,7 @@ export default function App() {
     `> echo $TAGLINE`,
     CONFIG.tagline,
   ]), [])
-  const { out: typed, done: typedDone } = useTypewriter(typedLines, 9)
+  const { out: typed, done: typedDone } = useTypewriter(typedLines, 1, 0)
 
   const languages = useMemo(() => {
     const set = new Set()
@@ -204,8 +205,12 @@ export default function App() {
           />
         </div>
 
+        <div ref={el => sectionRefs.current.education = el}>
+          <Education education={CONFIG.education} achievements={CONFIG.achievements} resumeUrl={CONFIG.resumeUrl} />
+        </div>
+
         <div ref={el => sectionRefs.current.about = el}>
-          <About bio={CONFIG.bio} skills={CONFIG.skills} status={status} username={username} />
+          <About bio={CONFIG.bio} skills={CONFIG.skills} status={status} username={username} resumeUrl={CONFIG.resumeUrl} />
         </div>
 
         <div ref={el => sectionRefs.current.contact = el}>

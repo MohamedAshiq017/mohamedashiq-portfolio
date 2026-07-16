@@ -1,8 +1,8 @@
-.app { min-height: 100vh; overflow-x: hidden; }
+.app { min-height: 100vh; overflow-x: hidden; padding-top: 52px; }
 
 /* ---------- Tab bar ---------- */
 .tabbar {
-  position: sticky; top: 0; z-index: 50;
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
   background: var(--bg-inset);
   border-bottom: 1px solid var(--line);
   backdrop-filter: blur(6px);

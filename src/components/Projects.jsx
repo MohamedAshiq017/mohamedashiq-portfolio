@@ -6,7 +6,7 @@ import SectionHeading from './SectionHeading'
 import { langColor } from '../config'
 
 export default function Projects({
-  status, username, languages, langFilter, setLangFilter,
+  status, error, username, languages, langFilter, setLangFilter,
   repos, orderedRepos, reorderMode, setReorderMode,
   onDragStart, onDrop, onNudge, onReset, featuredProject, isOwner,
 }) {
@@ -14,11 +14,13 @@ export default function Projects({
   const liveRepo = featuredProject
     ? repos.find(r => r.name.toLowerCase() === featuredProject.repoName.toLowerCase())
     : null
+  const visibleRepos = orderedRepos.filter(
+    (repo) => !featuredProject || repo.name.toLowerCase() !== featuredProject.repoName.toLowerCase()
+  )
 
   return (
     <section id="projects" className="section">
       <SectionHeading>projects/</SectionHeading>
-      <p className="section-sub">All public repositories, live from GitHub. Click a card for the details.</p>
 
       <FeaturedProject project={featuredProject} liveRepo={liveRepo} />
 
@@ -61,22 +63,22 @@ export default function Projects({
 
       {status === 'error' && (
         <div className="term-log mono">
-          <div className="err">$ fetch failed: could not resolve user "{username}"</div>
-          <div className="muted">Try a different username above.</div>
+          <div className="err">$ fetch failed: {error || `could not resolve user "${username}"`}</div>
+          <div className="muted">Try a different username above or check GitHub API rate limits.</div>
         </div>
       )}
 
       {status === 'ok' && (
         <div className={`project-grid ${reorderMode ? 'grid-reorder' : ''}`}>
-          {orderedRepos.length === 0 && (
+          {visibleRepos.length === 0 && (
             <p className="muted mono">no public repos match this filter.</p>
           )}
-          {orderedRepos.map((repo, idx) => (
+          {visibleRepos.map((repo, idx) => (
             <ProjectCard
               key={repo.id}
               repo={repo}
               index={idx}
-              total={orderedRepos.length}
+              total={visibleRepos.length}
               reorderMode={reorderMode}
               onDragStart={onDragStart}
               onDrop={onDrop}

@@ -1,3 +1,4 @@
+html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .app { min-height: 100vh; overflow-x: hidden; padding-top: 52px; }
 
 /* ---------- Tab bar ---------- */
@@ -25,10 +26,13 @@
   transition: color .15s ease, background .15s ease;
 }
 .tab:hover { color: var(--text); background: var(--bg-raised); }
-.tab-active { color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+.tab-active { color: var(--accent); background: rgba(255, 255, 255, .04); box-shadow: inset 0 -2px 0 var(--accent); }
 .tab-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--text-faint); flex-shrink: 0; }
-.tab-active .tab-dot { background: var(--accent); }
+.tab-active .tab-dot { background: var(--accent); transform: scale(1.1); }
 .nav-toggle { display: none; background: none; border: none; color: var(--text-dim); font-size: 18px; padding: 0 4px; }
+
+.meta-live { color: var(--ok); font-weight: 700; display: inline-flex; align-items: center; gap:6px }
+.meta-live:hover { color: var(--accent); }
 
 @media (max-width: 720px) {
   .tabbar-inner { gap: 12px; }
@@ -44,11 +48,11 @@
 }
 
 /* ---------- Layout ---------- */
-.section { max-width: 1100px; margin: 0 auto; padding: 72px 20px; }
-#experience.section { padding-top: 28px; }
-@media (max-width: 600px) { .section { padding: 52px 16px; } }
+.section { max-width: 1100px; margin: 0 auto; padding: 28px 20px 22px; scroll-margin-top: 96px; }
+#projects { padding-top: 8px; }
+@media (max-width: 600px) { .section { padding: 22px 16px 18px; } }
 .section-head {
-  display: flex; align-items: baseline; gap: 12px; margin-bottom: 10px;
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 8px;
 }
 .section-glyph {
   color: var(--accent);
@@ -239,9 +243,10 @@
 }
 .drag-handle button:disabled { opacity: .3; cursor: default; }
 .drag-handle button:not(:disabled):hover { border-color: var(--accent); color: var(--accent); }
-.card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; min-width: 0; }
+.card-head { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; min-width: 0; flex-wrap: wrap; }
 .card-icon { color: var(--accent2); font-size: 13px; flex-shrink: 0; }
 .card-name { color: var(--text); font-size: 14px; font-weight: 700; overflow-wrap: anywhere; }
+.card-date { color: var(--text-faint); font-size: 11px; margin-left: auto; }
 .card-desc { color: var(--text-dim); font-size: 13px; line-height: 1.6; min-height: 40px; margin: 0 0 16px; overflow-wrap: anywhere; }
 .card-meta { display: flex; gap: 14px; font-size: 12px; color: var(--text-faint); flex-wrap: wrap; }
 .meta-item { display: flex; align-items: center; gap: 5px; }
@@ -256,10 +261,30 @@
 .ls-row { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
 .ls-row:last-child { margin-bottom: 0; }
 .ls-cat { color: var(--accent2); font-size: 12px; }
-.ls-items { display: flex; flex-wrap: wrap; gap: 6px; }
-.badge {
-  background: var(--bg-inset); border: 1px solid var(--line-soft); color: var(--text);
-  font-size: 11px; padding: 4px 9px; border-radius: 5px;
+.ls-items { display: flex; flex-wrap: wrap; gap: 10px; }
+.skill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  min-height: 38px;
+  border-radius: 10px;
+  color: inherit;
+  background: var(--bg-raised);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.skill-badge-icon {
+  width: 18px;
+  height: 18px;
+  display: inline-flex;
+  flex-shrink: 0;
+  filter: brightness(0) invert(1);
+}
+.skill-badge-label {
+  font-size: 13px;
+  line-height: 1;
 }
 
 .github-panel { background: var(--bg-raised); border: 1px solid var(--line); border-radius: 10px; padding: 20px; min-width: 0; }

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 export function useGithub(username) {
-  const [state, setState] = useState({ status: 'loading', user: null, repos: [] })
+  const [state, setState] = useState({ status: 'loading', user: null, repos: [], error: null })
   useEffect(() => {
     let cancelled = false
     setState({ status: 'loading', user: null, repos: [] })
@@ -11,12 +11,17 @@ export function useGithub(username) {
           fetch(`https://api.github.com/users/${username}`),
           fetch(`https://api.github.com/users/${username}/repos?per_page=100&sort=updated`),
         ])
-        if (!uRes.ok || !rRes.ok) throw new Error('lookup failed')
+        if (!uRes.ok || !rRes.ok) {
+          let message = 'lookup failed'
+          if (uRes.status === 404) message = 'user not found'
+          if (uRes.status === 403 || rRes.status === 403) message = 'rate limited by GitHub API'
+          throw new Error(message)
+        }
         const user = await uRes.json()
         const repos = await rRes.json()
-        if (!cancelled) setState({ status: 'ok', user, repos: Array.isArray(repos) ? repos : [] })
+        if (!cancelled) setState({ status: 'ok', user, repos: Array.isArray(repos) ? repos : [], error: null })
       } catch (e) {
-        if (!cancelled) setState({ status: 'error', user: null, repos: [] })
+        if (!cancelled) setState({ status: 'error', user: null, repos: [], error: e?.message || 'unknown error' })
       }
     }
     run()

@@ -7,6 +7,7 @@ import Nav from './components/Nav'
 import Hero from './components/Hero'
 import Experience from './components/Experience'
 import Education from './components/Education'
+import Skills from './components/Skills'
 import Projects from './components/Projects'
 import About from './components/About'
 import Contact from './components/Contact'
@@ -17,9 +18,10 @@ export default function App() {
   const [active, setActive] = useState('home')
   const [username, setUsername] = useState(CONFIG.githubUsername)
   const [inputVal, setInputVal] = useState(CONFIG.githubUsername)
-  const { status, user, repos } = useGithub(username)
+  const { status, user, repos, error } = useGithub(username)
   const sectionRefs = useRef({})
   const [navOpen, setNavOpen] = useState(false)
+  const scrollPause = useRef(null)
 
   // Reorder controls are an authoring tool, not something a visitor should
   // see. Visit once with ?owner=1 in the URL and this browser remembers it;
@@ -33,6 +35,13 @@ export default function App() {
     try { setIsOwner(localStorage.getItem(OWNER_KEY) === '1') } catch { setIsOwner(false) }
   }, [])
 
+  useEffect(() => {
+    if (!window.location.hash) {
+      window.scrollTo(0, 0)
+      setActive('home')
+    }
+  }, [])
+
   const typedLines = useMemo(() => ([
     `> whoami`,
     CONFIG.name,
@@ -41,7 +50,21 @@ export default function App() {
     `> echo $TAGLINE`,
     CONFIG.tagline,
   ]), [])
-  const { out: typed, done: typedDone } = useTypewriter(typedLines, 1, 0)
+
+  // Render outputs (the text results) faster while prompts type at normal speed.
+  const normalPrompts = useMemo(() => ([`> whoami`, `> cat role.txt`, `> echo $TAGLINE`]), [])
+  const fastOutputs = useMemo(() => ([CONFIG.name, CONFIG.role, CONFIG.tagline]), [])
+  const { out: normalOut, done: normalDone } = useTypewriter(normalPrompts, 18, 0, 1)
+  const { out: fastOut, done: fastDone } = useTypewriter(fastOutputs, 2, 0, 1)
+  const typed = useMemo(() => {
+    const out = []
+    for (let i = 0; i < 3; i++) {
+      out.push(normalOut[i] || '')
+      out.push(fastOut[i] || '')
+    }
+    return out
+  }, [normalOut, fastOut])
+  const typedDone = normalDone && fastDone
 
   const languages = useMemo(() => {
     const set = new Set()
@@ -89,12 +112,15 @@ export default function App() {
     if (!repos.length) return null
     const withPush = repos.filter(r => r.pushed_at)
     const sorted = [...withPush].sort((a, b) => new Date(b.pushed_at) - new Date(a.pushed_at))
-    const latestActiveRepo = sorted[0]?.name || null
+    const latestActive = sorted[0] || null
     const deployed = repos.filter(r => r.homepage && r.homepage.trim())
     const deploySorted = [...deployed].sort((a, b) => new Date(b.pushed_at || b.updated_at) - new Date(a.pushed_at || a.updated_at))
-    const latestDeployment = deploySorted[0]?.name || null
-    if (!latestActiveRepo && !latestDeployment) return null
-    return { latestActiveRepo, latestDeployment }
+    const latestDeployment = deploySorted[0] || null
+    if (!latestActive && !latestDeployment) return null
+    return {
+      latestActiveRepo: latestActive ? { name: latestActive.name, url: latestActive.html_url } : null,
+      latestDeployment: latestDeployment ? { name: latestDeployment.name, url: latestDeployment.homepage || latestDeployment.html_url } : null,
+    }
   }, [repos])
 
   function persistOrder(next) {
@@ -130,31 +156,55 @@ export default function App() {
   }
 
   const scrollTo = (id) => {
-    setActive(id)
     setNavOpen(false)
-    sectionRefs.current[id]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    const target = document.getElementById(id)
+    if (target) {
+      if (scrollPause.current) {
+        clearTimeout(scrollPause.current)
+      }
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      setActive(id)
+      scrollPause.current = setTimeout(() => { scrollPause.current = null }, 600)
+    }
   }
 
-  // Scroll-spy: keep the tab bar's active state in sync with whatever
-  // section is actually in view, not just the last one clicked.
   useEffect(() => {
-    const ids = TABS.map(t => t.id)
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const id = ids.find((key) => sectionRefs.current[key] === entry.target)
-            if (id) setActive(id)
-          }
-        })
-      },
-      { rootMargin: '-45% 0px -50% 0px', threshold: 0 }
-    )
-    ids.forEach((id) => {
-      const el = sectionRefs.current[id]
-      if (el) observer.observe(el)
-    })
-    return () => observer.disconnect()
+    const getActiveSection = () => {
+      const anchorLine = 120
+      const sections = TABS.map((tab) => {
+        const el = document.getElementById(tab.id)
+        if (!el) return null
+        const rect = el.getBoundingClientRect()
+        return { id: tab.id, top: rect.top, bottom: rect.bottom }
+      }).filter(Boolean)
+
+      if (!sections.length) return 'home'
+
+      let best = sections[0]
+      let bestDistance = Math.abs(best.top - anchorLine)
+      for (const section of sections) {
+        const distance = Math.abs(section.top - anchorLine)
+        if (distance < bestDistance) {
+          best = section
+          bestDistance = distance
+        }
+      }
+
+      return best.id
+    }
+
+    const handleScroll = () => {
+      if (scrollPause.current) return
+      const next = getActiveSection()
+      setActive((current) => (current === next ? current : next))
+    }
+
+    handleScroll()
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (scrollPause.current) clearTimeout(scrollPause.current)
+    }
   }, [])
 
   const accountAge = user?.created_at
@@ -166,7 +216,7 @@ export default function App() {
       <Nav tabs={TABS} active={active} navOpen={navOpen} setNavOpen={setNavOpen} onNavigate={scrollTo} />
 
       <main>
-        <div ref={el => sectionRefs.current.home = el}>
+        <section id="home" ref={el => sectionRefs.current.home = el} className="section hero">
           <Hero
             name={CONFIG.name}
             typed={typed}
@@ -178,16 +228,18 @@ export default function App() {
             user={user}
             accountAge={accountAge}
             recentActivity={recentActivity}
+            error={error}
           />
-        </div>
+        </section>
 
-        <div ref={el => sectionRefs.current.experience = el}>
+        <section id="experience" ref={el => sectionRefs.current.experience = el}>
           <Experience experience={CONFIG.experience} education={CONFIG.education} achievements={CONFIG.achievements} />
-        </div>
+        </section>
 
-        <div ref={el => sectionRefs.current.projects = el}>
+        <section id="projects" ref={el => sectionRefs.current.projects = el}>
           <Projects
             status={status}
+            error={error}
             username={username}
             languages={languages}
             langFilter={langFilter}
@@ -203,19 +255,23 @@ export default function App() {
             featuredProject={CONFIG.featuredProject}
             isOwner={isOwner}
           />
-        </div>
+        </section>
 
-        <div ref={el => sectionRefs.current.education = el}>
+        <section id="skills" ref={el => sectionRefs.current.skills = el}>
+          <Skills skills={CONFIG.skills} />
+        </section>
+
+        <section id="education" ref={el => sectionRefs.current.education = el}>
           <Education education={CONFIG.education} achievements={CONFIG.achievements} resumeUrl={CONFIG.resumeUrl} />
-        </div>
+        </section>
 
-        <div ref={el => sectionRefs.current.about = el}>
+        <section id="about" ref={el => sectionRefs.current.about = el}>
           <About bio={CONFIG.bio} skills={CONFIG.skills} status={status} username={username} resumeUrl={CONFIG.resumeUrl} />
-        </div>
+        </section>
 
-        <div ref={el => sectionRefs.current.contact = el}>
+        <section id="contact" ref={el => sectionRefs.current.contact = el}>
           <Contact email={CONFIG.email} linkedin={CONFIG.linkedin} instagram={CONFIG.instagram} twitter={CONFIG.twitter} resumeUrl={CONFIG.resumeUrl} username={username} />
-        </div>
+        </section>
       </main>
     </div>
   )

@@ -4,7 +4,7 @@ import App from './App.jsx'
 import './index.css'
 import { CONFIG } from './config'
 
-document.title = `${CONFIG.name} — ${CONFIG.role}`
+document.title = CONFIG.name
 const metaDesc = document.querySelector('meta[name="description"]')
 if (metaDesc) metaDesc.setAttribute('content', `${CONFIG.name} — ${CONFIG.role}. ${CONFIG.tagline}`)
 

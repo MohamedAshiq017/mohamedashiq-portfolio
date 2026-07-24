@@ -25,22 +25,7 @@ export default function About({ bio, skills, status, username, resumeUrl }) {
       <div className="about-grid">
         <div className="about-bio">
           {bio.map((p, i) => <p key={i} className="bio-line">{p}</p>)}
-          <div className="ls-block mono">
-            <div className="ls-header">$ ls -la ./skills</div>
-            {Object.entries(skills).map(([cat, items]) => (
-              <div key={cat} className="ls-row">
-                <span className="ls-cat">{cat}/</span>
-                <span className="ls-items">
-                  {items.map((item, i) => (
-                    <span key={item} className="badge">
-                      <span className="chip-dot" style={{ background: SKILL_DOT_COLORS[i % SKILL_DOT_COLORS.length] }} />
-                      {item}
-                    </span>
-                  ))}
-                </span>
-              </div>
-            ))}
-          </div>
+
         </div>
 
         <div className="github-panel">
@@ -60,7 +45,7 @@ export default function About({ bio, skills, status, username, resumeUrl }) {
               </div>
             </div>
           </div>
-          <div style={{ marginTop: 10 }} className="muted small">This simulates a small terminal and will start the resume download when it reaches 100%.</div>
+            
         </div>
       </div>
     </section>
@@ -68,3 +53,10 @@ export default function About({ bio, skills, status, username, resumeUrl }) {
 }
 
 const SKILL_DOT_COLORS = ['#e8a33d', '#5fb3b3', '#7fbf7f', '#c574c5', '#e0665f']
+
+const SKILL_ICONS = {
+  JavaScript: '🟨', TypeScript: '🔷', Python: '🐍', Java: '☕', SQL: '🗄️',
+  React: '⚛️', 'React.js': '⚛️', 'Vue.js': '🟩', 'Node.js': '🟩',
+  'Express.js': '🚂', 'Spring Boot': '🌱', 'PostgreSQL': '🐘', MongoDB: '🍃',
+  Git: '🔧', Jenkins: '⚙️', AWS: '☁️', Docker: '🐳', Tailwind: '🎨',
+}

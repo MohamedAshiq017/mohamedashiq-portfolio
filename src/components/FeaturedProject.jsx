@@ -23,10 +23,10 @@ export default function FeaturedProject({ project, liveRepo }) {
           <span className="muted">{project.date}</span>
           <span className="spotlight-links">
             {link && <a href={link} target="_blank" rel="noopener noreferrer" className="spotlight-link">↗ view source</a>}
-            {liveRepo?.homepage && (
-              <a href={liveRepo.homepage} target="_blank" rel="noopener noreferrer" className="spotlight-link spotlight-link-live">↗ live demo</a>
+            {(liveRepo?.homepage || project.liveUrl || project.repoUrl) && (
+              <a href={liveRepo?.homepage || project.liveUrl || project.repoUrl} target="_blank" rel="noopener noreferrer" className="spotlight-link spotlight-link-live">↗ live demo</a>
             )}
-            {!link && !liveRepo?.homepage && (
+            {!link && !liveRepo?.homepage && !project.liveUrl && (
               <span className="muted small">add a live link in config.featuredProject once hosted</span>
             )}
           </span>

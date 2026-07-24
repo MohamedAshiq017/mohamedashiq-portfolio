@@ -7,7 +7,7 @@ const GLYPHS = '01アイウエオカキクケコ$#%&*+=<>/\\'
 const randGlyph = () => GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
 
-export function useTypewriter(lines, speed = 9, startDelay = 200) {
+export function useTypewriter(lines, speed = 9, startDelay = 200, parallelGroups = 1) {
   const [out, setOut] = useState([])
   const [done, setDone] = useState(false)
 
@@ -18,38 +18,57 @@ export function useTypewriter(lines, speed = 9, startDelay = 200) {
     setDone(false)
 
     const SCRAMBLE_STEPS = 2
-    const SCRAMBLE_DELAY = Math.max(7, speed)
-    const REVEAL_DELAY = speed
+    const SCRAMBLE_DELAY = Math.max(4, Math.floor(speed / 2))
+    const REVEAL_DELAY = Math.max(3, Math.floor(speed / 1.5))
 
-    async function typeLine(lineIdx) {
-      const line = lines[lineIdx]
+    // groupCount indicates how many parallel groups we should run.
+    // Lines are assumed to be interleaved per group (e.g. group0-line0, group1-line0...).
+    const groups = []
+    if (parallelGroups <= 1) {
+      groups.push(lines.map((_, idx) => idx))
+    } else {
+      // partition indices into parallelGroups buckets preserving order
+      for (let g = 0; g < parallelGroups; g++) {
+        groups.push([])
+      }
+      for (let i = 0; i < lines.length; i++) {
+        groups[i % parallelGroups].push(i)
+      }
+    }
+
+    async function typeIndex(idx) {
+      const line = lines[idx]
       for (let i = 0; i < line.length; i++) {
         if (cancelled) return
         for (let s = 0; s < SCRAMBLE_STEPS; s++) {
           if (cancelled) return
-          result[lineIdx] = line.slice(0, i) + randGlyph()
+          result[idx] = line.slice(0, i) + randGlyph()
           setOut([...result])
           await wait(SCRAMBLE_DELAY)
         }
-        result[lineIdx] = line.slice(0, i + 1)
+        result[idx] = line.slice(0, i + 1)
         setOut([...result])
         await wait(REVEAL_DELAY)
       }
     }
 
-    async function run() {
-      await wait(startDelay)
-      for (let l = 0; l < lines.length; l++) {
+    async function runGroup(indices) {
+      for (let j = 0; j < indices.length; j++) {
         if (cancelled) return
-        await typeLine(l)
-        await wait(180)
+        await typeIndex(indices[j])
+        await wait(120)
       }
+    }
+
+    async function runAll() {
+      await wait(startDelay)
+      await Promise.all(groups.map(g => runGroup(g)))
       if (!cancelled) setDone(true)
     }
 
-    run()
+    runAll()
     return () => { cancelled = true }
-  }, [lines, speed, startDelay])
+  }, [lines, speed, startDelay, parallelGroups])
 
   return { out, done }
 }

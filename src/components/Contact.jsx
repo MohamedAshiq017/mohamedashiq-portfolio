@@ -14,7 +14,7 @@ export default function Contact({ email, linkedin, instagram, twitter, resumeUrl
   const socials = [
     { Icon: MailIcon, handle: email, href: `mailto:${email}`, external: false },
     { Icon: GithubIcon, handle: `@${username}`, href: `https://github.com/${username}`, external: true },
-    { Icon: LinkedinIcon, handle: `/in/${lastSegment(linkedin)}`, href: linkedin, external: true },
+    { Icon: LinkedinIcon, handle: lastSegment(linkedin), href: linkedin, external: true },
     { Icon: XIcon, handle: `@${lastSegment(twitter)}`, href: twitter, external: true },
     { Icon: InstagramIcon, handle: `@${lastSegment(instagram)}`, href: instagram, external: true },
   ]
@@ -22,7 +22,7 @@ export default function Contact({ email, linkedin, instagram, twitter, resumeUrl
   return (
     <section id="contact" className="section contact">
       <SectionHeading>contact/</SectionHeading>
-      <p className="section-sub">Open a session — the logo and the handle both work.</p>
+      <p className="section-sub">If you need a dev, a debate, or a well-timed coffee referral, I’m available.</p>
 
       <div className="social-row">
         {socials.map((s) => (
@@ -39,13 +39,7 @@ export default function Contact({ email, linkedin, instagram, twitter, resumeUrl
         ))}
       </div>
 
-      <a className="resume-link mono" href={resumeUrl} target="_blank" rel="noopener noreferrer">
-        <span className="prompt-sym">$</span> curl -O resume.pdf
-      </a>
 
-      <footer className="footer muted mono">
-        built with react · deployed today · {new Date().getFullYear()}
-      </footer>
     </section>
   )
 }

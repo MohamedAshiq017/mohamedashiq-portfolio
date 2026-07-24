@@ -1,9 +1,9 @@
 export default function Hero({
   name, typed, typedDone, inputVal, setInputVal, onRun,
-  status, user, accountAge, recentActivity,
+  status, user, accountAge, recentActivity, error,
 }) {
   return (
-    <section id="home" className="section hero">
+    <>
       <div className="terminal">
         <div className="terminal-titlebar">
           <span className="dot dot-r" /><span className="dot dot-y" /><span className="dot dot-g" />
@@ -35,7 +35,7 @@ export default function Hero({
         </label>
 
         {status === 'loading' && <p className="muted mono">fetching profile…</p>}
-        {status === 'error' && <p className="err mono">user not found — try another username above</p>}
+        {status === 'error' && <p className="err mono">{`user lookup failed: ${error || 'user not found'}`}</p>}
         {status === 'ok' && user && (
           <>
             <div className="stat-grid">
@@ -44,17 +44,17 @@ export default function Hero({
             </div>
             {recentActivity?.latestActiveRepo && (
               <p className="muted mono small activity-line">
-                ↳ latest active repo: <span className="activity-repo">{recentActivity.latestActiveRepo}</span>
+                ↳ latest active repo: <a className="activity-repo inline-link" href={recentActivity.latestActiveRepo.url} target="_blank" rel="noreferrer">{recentActivity.latestActiveRepo.name}</a>
               </p>
             )}
             {recentActivity?.latestDeployment && (
               <p className="muted mono small activity-line">
-                ↳ latest deployment: <span className="activity-repo">{recentActivity.latestDeployment}</span>
+                ↳ latest deployment: <a className="activity-repo inline-link" href={recentActivity.latestDeployment.url} target="_blank" rel="noreferrer">{recentActivity.latestDeployment.name}</a>
               </p>
             )}
           </>
         )}
       </div>
-    </section>
+    </>
   )
 }

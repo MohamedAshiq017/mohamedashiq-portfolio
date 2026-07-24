@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Mohamed Ashiq portfolio icon">
+  <rect width="64" height="64" rx="16" fill="#0b0d11" />
+  <rect x="12" y="12" width="40" height="40" rx="10" fill="#11151d" stroke="#5eead4" stroke-width="2" />
+  <path d="M20 20h24" stroke="#5eead4" stroke-width="3" stroke-linecap="round" />
+  <path d="M20 32h16" stroke="#7dd3fc" stroke-width="3" stroke-linecap="round" />
+  <path d="M20 44h12" stroke="#fbbf24" stroke-width="3" stroke-linecap="round" />
+  <circle cx="44" cy="44" r="4" fill="#5eead4" />
+</svg>

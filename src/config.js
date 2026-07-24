@@ -25,7 +25,7 @@ export const CONFIG = {
     frontend: ['React.js', 'Vue.js', 'Bootstrap', 'Tailwind CSS', 'EJS'],
     backend: ['Node.js', 'Express.js', 'Spring Boot', 'REST APIs'],
     database: ['PostgreSQL', 'MongoDB', 'MySQL'],
-    tools: ['Git', 'Jenkins', 'Maven', 'Postman', 'AWS CodeCommit'],
+    tools: ['Git', 'Jenkins', 'Maven', 'Postman', 'AWS CodeCommit', 'Claude'],
   },
 
   // Work experience, most recent first.
@@ -48,7 +48,7 @@ export const CONFIG = {
       degree: 'B.E. in Computer Science and Engineering',
       school: 'University College of Engineering, Anna University, Tiruchirappalli',
       period: 'Nov 2021 — June 2025',
-      detail: 'CGPA: 8.0 / 10',
+      detail: 'CGPA: 7.98 / 10',
     },
   ],
 
@@ -61,8 +61,8 @@ export const CONFIG = {
       date: 'Dec 2023',
       badge: '🏆',
       link: 'https://drive.google.com/file/d/1NG6qzrHUL2o-sGwuihCFRMdk1iFOPGSE/view',
-      linkLabel: 'view write-up',
-      officialLink: 'https://www.sih.gov.in/sih2023-grand-finale-result',
+      linkLabel: 'view certificate',
+      officialLink: 'https://www.sih.gov.in/sih2023-grand-finale-result#:~:text=126-,Ministry%20of%20Defence,100000,-127',
       officialLabel: 'verify on SIH portal',
     },
     {
@@ -75,26 +75,8 @@ export const CONFIG = {
     },
   ],
 
-  // The one project that gets its own spotlight card above the grid.
-  // Static content (not pulled from the API) so it always renders reliably,
-  // and links out to the live repo if the name below matches one of yours.
-  // Real GitHub repo name pulled from the resume's own MediLink hyperlink —
-  // it's pushed under "APS", not "MediLink".
-  featuredProject: {
-    repoName: 'APS',
-    repoUrl: 'https://github.com/MohamedAshiq017/APS',
-    title: 'MediLink',
-    tagline: 'full-stack build',
-    description: 'Full-stack healthcare management platform with role-based scheduling, secure auth, and automated notifications — built end to end.',
-    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT', 'Cloudinary'],
-    points: [
-      'REST APIs for user management, appointment scheduling, and role-based operations',
-      'JWT authentication, bcrypt password hashing, and role-based access control',
-      'Cloudinary for file storage and Nodemailer for automated email notifications',
-      'Appointment scheduling with conflict validation and business-rule enforcement',
-    ],
-    date: 'May 2025',
-  },
+  // Remove the featured spotlight card so the MediLink project is no longer displayed.
+  featuredProject: null,
 
   // Default display order for your repos, by exact GitHub repo name.
   // Anything not listed here falls back to sorted-by-stars, appended after.
@@ -105,9 +87,9 @@ export const TABS = [
   { id: 'home', label: 'home.tsx' },
   { id: 'experience', label: 'experience.tsx' },
   { id: 'projects', label: 'projects.tsx' },
-  { id: 'about', label: 'about.tsx' },
+  { id: 'skills', label: 'skills.tsx' },
   { id: 'education', label: 'education.tsx' },
-  { id: 'contact', label: 'contact.tsx' },
+  { id: 'about', label: 'about.tsx' },
 ]
 
 export const LANG_COLORS = {

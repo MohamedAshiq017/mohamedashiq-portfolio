@@ -56,6 +56,34 @@ export async function fetchRepoDetails(fullName) {
     }
   }
 
+  // Try to detect Python deps from requirements.txt or pyproject.toml
+  let pyDeps = []
+  const reqJson = await safeJson(fetch(`https://api.github.com/repos/${fullName}/contents/requirements.txt`))
+  if (reqJson?.content) {
+    try {
+      const req = decodeBase64(reqJson.content)
+      pyDeps = req
+        .split('\n')
+        .map(l => l.trim())
+        .filter(l => l && !l.startsWith('#'))
+        .map(l => l.split(/[=<>~!]/)[0].trim())
+        .slice(0, 20)
+    } catch {
+      pyDeps = []
+    }
+  } else {
+    const pyprojectJson = await safeJson(fetch(`https://api.github.com/repos/${fullName}/contents/pyproject.toml`))
+    if (pyprojectJson?.content) {
+      try {
+        const toml = decodeBase64(pyprojectJson.content)
+        const matches = Array.from(toml.matchAll(/(?:requests|numpy|pandas|flask|django|turtle|pyperclip|pytest|scikit-learn|matplotlib|pillow|sqlalchemy)/gi))
+        pyDeps = matches.map(m => m[0]).slice(0, 20)
+      } catch {
+        pyDeps = []
+      }
+    }
+  }
+
   // Try to pull images out of the README (best-effort). Prefer absolute URLs,
   // fall back to a raw.githubusercontent.com master path for simple relative
   // links so dialogs can show screenshots included in README files.
@@ -84,6 +112,7 @@ export async function fetchRepoDetails(fullName) {
     }
   }
 
-  return { languages, deps, dockerPreview, dockerized: Boolean(dockerPreview), readmeImages }
+  const allDeps = [...deps, ...pyDeps].slice(0, 24)
+  return { languages, deps: allDeps, dockerPreview, dockerized: Boolean(dockerPreview), readmeImages }
 }
 

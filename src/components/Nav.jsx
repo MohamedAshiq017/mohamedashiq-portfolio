@@ -9,6 +9,7 @@ export default function Nav({ tabs, active, navOpen, setNavOpen, onNavigate }) {
               key={t.id}
               className={`tab ${active === t.id ? 'tab-active' : ''}`}
               onClick={() => onNavigate(t.id)}
+              aria-current={active === t.id ? 'page' : undefined}
             >
               <span className="tab-dot" aria-hidden="true" />
               {t.label}

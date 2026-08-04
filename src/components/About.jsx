@@ -38,7 +38,7 @@ export default function About({ bio, skills, status, username, resumeUrl }) {
               <div className="terminal-title mono">resume-downloader</div>
             </div>
             <div className={`terminal-body mono ${running ? 'decoding' : ''}`}>
-              <div className="line-prompt">$ curl -O resume.pdf</div>
+              <div className="line-prompt">$ curl -O "mohamed Ashiq S.pdf"</div>
               <div className="line-output">{running ? `downloading... ${progress}%` : 'ready to run'}</div>
               <div style={{ marginTop: 8 }}>
                 <button className="lookup-go" onClick={() => { if (!running) { setProgress(0); setRunning(true) } }}>{running ? 'running…' : 'run'}</button>

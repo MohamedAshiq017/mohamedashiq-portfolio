@@ -5,7 +5,7 @@ export const CONFIG = {
   githubUsername: 'MohamedAshiq017',
   name: 'Mohamed Ashiq S',
   role: 'Trainee Engineer',
-  tagline: 'Backend-leaning full-stack developer. I like turning messy requirements into APIs that still hold up months later — currently learning that lesson at Vaken Technologies.',
+  tagline: 'Backend-leaning full-stack developer building reliable systems from APIs to product features.',
   location: 'Trichy, Tamil Nadu',
   email: 'mohamedashiq120404@gmail.com',
   phone: '+91 9962154345',
@@ -16,7 +16,7 @@ export const CONFIG = {
 
   bio: [
     "I'm Mohamed Ashiq, a backend-leaning full-stack developer based in Trichy, Tamil Nadu.",
-    "I started as the person who could always find why the API was returning the wrong data — now I'm the one designing the API so that doesn't happen in the first place.",
+    "I started by debugging APIs and tracing broken flows, and over time moved into designing systems that are easier to scale, maintain, and reason about.",
     "Currently a Trainee Engineer at Vaken Technologies, working across REST APIs, data integrity, and CI/CD. Outside of work, I build full-stack side projects end to end.",
   ],
 
@@ -75,8 +75,22 @@ export const CONFIG = {
     },
   ],
 
-  // Remove the featured spotlight card so the MediLink project is no longer displayed.
-  featuredProject: null,
+  // Featured spotlight card shown above the project grid.
+  featuredProject: {
+    repoName: 'APS',
+    repoUrl: 'https://github.com/MohamedAshiq017/APS',
+    title: 'MediLink',
+    tagline: 'end-to-end product build',
+    description: 'Full-stack healthcare management platform with role-based scheduling, secure auth, and automated notifications — built end to end.',
+    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT', 'Cloudinary'],
+    points: [
+      'REST APIs for user management, appointment scheduling, and role-based operations',
+      'JWT authentication, bcrypt password hashing, and role-based access control',
+      'Cloudinary for file storage and Nodemailer for automated email notifications',
+      'Appointment scheduling with conflict validation and business-rule enforcement',
+    ],
+    date: 'May 2025',
+  },
 
   // Default display order for your repos, by exact GitHub repo name.
   // Anything not listed here falls back to sorted-by-stars, appended after.

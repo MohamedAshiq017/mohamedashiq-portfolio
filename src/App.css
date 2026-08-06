@@ -218,6 +218,9 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 
 /* ---------- Project cards ---------- */
 .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.project-toggle-row {
+  display: flex; justify-content: center; margin-top: 18px;
+}
 .card {
   background: var(--bg-raised); border: 1px solid var(--line);
   border-radius: 10px; transition: border-color .15s ease, transform .15s ease;
@@ -298,16 +301,24 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 
 .social-row { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 30px; }
 .social-item {
-  display: flex; align-items: center; gap: 10px;
+  position: relative; display: flex; align-items: center; gap: 10px;
   padding: 11px 16px;
   background: var(--bg-raised); border: 1px solid var(--line);
   border-radius: 10px; color: var(--text-dim);
   transition: border-color .15s ease, color .15s ease, transform .15s ease;
+  z-index: 1;
 }
 .social-item:hover { border-color: var(--accent2); color: var(--text); transform: translateY(-2px); }
 .social-icon { display: flex; color: var(--accent2); flex-shrink: 0; }
 .social-item:hover .social-icon { color: var(--accent); }
 .social-handle { font-size: 13px; }
+.social-tooltip {
+  position: absolute; left: 50%; top: calc(100% + 10px);
+  transform: translateX(-50%); white-space: nowrap; font-size: 11px;
+  padding: 4px 8px; border-radius: 6px; background: rgba(15, 16, 20, 0.96);
+  border: 1px solid var(--line); color: var(--text); box-shadow: 0 8px 20px rgba(0,0,0,0.18);
+  z-index: 10;
+}
 
 .resume-link {
   display: inline-flex; align-items: center; gap: 8px;

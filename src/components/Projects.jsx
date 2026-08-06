@@ -1,9 +1,11 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ProjectCard from './ProjectCard'
 import FeaturedProject from './FeaturedProject'
 import ProjectDialog from './ProjectDialog'
 import SectionHeading from './SectionHeading'
 import { langColor } from '../config'
+
+const MOBILE_PROJECT_LIMIT = 6
 
 export default function Projects({
   status, error, username, languages, langFilter, setLangFilter,
@@ -11,12 +13,31 @@ export default function Projects({
   onDragStart, onDrop, onNudge, onReset, featuredProject, isOwner,
 }) {
   const [openRepo, setOpenRepo] = useState(null)
+  const [isCompactMobile, setIsCompactMobile] = useState(false)
+  const [showAllProjects, setShowAllProjects] = useState(false)
+
+  useEffect(() => {
+    const updateViewport = () => {
+      const compact = window.innerWidth <= 640
+      setIsCompactMobile(compact)
+      if (!compact) setShowAllProjects(false)
+    }
+
+    updateViewport()
+    window.addEventListener('resize', updateViewport)
+    return () => window.removeEventListener('resize', updateViewport)
+  }, [])
+
   const liveRepo = featuredProject
     ? repos.find(r => r.name.toLowerCase() === featuredProject.repoName.toLowerCase())
     : null
   const visibleRepos = orderedRepos.filter(
     (repo) => !featuredProject || repo.name.toLowerCase() !== featuredProject.repoName.toLowerCase()
   )
+
+  const displayedRepos = isCompactMobile && !showAllProjects
+    ? visibleRepos.slice(0, MOBILE_PROJECT_LIMIT)
+    : visibleRepos
 
   return (
     <section id="projects" className="section">
@@ -69,24 +90,38 @@ export default function Projects({
       )}
 
       {status === 'ok' && (
-        <div className={`project-grid ${reorderMode ? 'grid-reorder' : ''}`}>
-          {visibleRepos.length === 0 && (
-            <p className="muted mono">no public repos match this filter.</p>
+        <>
+          <div className={`project-grid ${reorderMode ? 'grid-reorder' : ''}`}>
+            {displayedRepos.length === 0 && (
+              <p className="muted mono">no public repos match this filter.</p>
+            )}
+            {displayedRepos.map((repo, idx) => (
+              <ProjectCard
+                key={repo.id}
+                repo={repo}
+                index={idx}
+                total={displayedRepos.length}
+                reorderMode={reorderMode}
+                onDragStart={onDragStart}
+                onDrop={onDrop}
+                onNudge={onNudge}
+                onOpen={setOpenRepo}
+              />
+            ))}
+          </div>
+
+          {isCompactMobile && visibleRepos.length > MOBILE_PROJECT_LIMIT && (
+            <div className="project-toggle-row">
+              <button
+                type="button"
+                className="chip mono"
+                onClick={() => setShowAllProjects(s => !s)}
+              >
+                {showAllProjects ? 'show less' : 'show more'}
+              </button>
+            </div>
           )}
-          {visibleRepos.map((repo, idx) => (
-            <ProjectCard
-              key={repo.id}
-              repo={repo}
-              index={idx}
-              total={visibleRepos.length}
-              reorderMode={reorderMode}
-              onDragStart={onDragStart}
-              onDrop={onDrop}
-              onNudge={onNudge}
-              onOpen={setOpenRepo}
-            />
-          ))}
-        </div>
+        </>
       )}
 
       <ProjectDialog repo={openRepo} onClose={() => setOpenRepo(null)} />

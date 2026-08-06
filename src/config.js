@@ -5,19 +5,20 @@ export const CONFIG = {
   githubUsername: 'MohamedAshiq017',
   name: 'Mohamed Ashiq S',
   role: 'Trainee Engineer',
-  tagline: 'Backend-leaning full-stack developer building reliable systems from APIs to product features.',
+  tagline: 'Backend-leaning Full-Stack Developer building scalable enterprise applications, APIs, and developer-focused tools.',
   location: 'Trichy, Tamil Nadu',
   email: 'mohamedashiq120404@gmail.com',
   phone: '+91 9962154345',
   linkedin: 'https://linkedin.com/in/mohamedashiq17',
   instagram: 'https://instagram.com/mohamedashiqs',
   twitter: 'https://x.com/Md_Ashiq17',
-  resumeUrl: '#',                 // <-- link to a hosted copy of your resume PDF
+  resumeUrl: 'https://www.dropbox.com/scl/fi/61jgkix27b5kl63j635qj/Mohamed-Ashiq-S.pdf?rlkey=u70zltl07io1974euj09di6n3&st=y0yzj0ro&dl=0',                 // <-- link to a hosted copy of your resume PDF
 
   bio: [
     "I'm Mohamed Ashiq, a backend-leaning full-stack developer based in Trichy, Tamil Nadu.",
-    "I started by debugging APIs and tracing broken flows, and over time moved into designing systems that are easier to scale, maintain, and reason about.",
-    "Currently a Trainee Engineer at Vaken Technologies, working across REST APIs, data integrity, and CI/CD. Outside of work, I build full-stack side projects end to end.",
+    "I enjoy building scalable software, solving backend challenges, and designing systems that are reliable, maintainable, and easy to extend.",
+    "Currently, I'm a Trainee Engineer at Vaken Technologies, where I develop features for an enterprise low-code platform, working on application configuration, reusable component frameworks, workflow automation, performance optimization, and enterprise software development.",
+    "Outside of work, I build full-stack projects, explore modern technologies, and continuously sharpen my software engineering skills."
   ],
 
   skills: {
@@ -35,10 +36,11 @@ export const CONFIG = {
       company: 'Vaken Technologies',
       period: 'Aug 2025 — Present',
       points: [
-        'Designed a high-performance REST API in Spring Boot to resolve latency issues, improving system responsiveness',
-        'Diagnosed and fixed data integrity and persistence bugs caused by incorrect API logic and DB mappings',
-        'Closed authorization and business-logic gaps that allowed unauthorized user actions, via validation and access control',
-        'Parallelized template-fetch operations, cutting execution time by ~42%, and contributed to CI/CD pipelines with Git and Jenkins',
+        'Developed core features for an enterprise low-code platform, enabling dynamic application configuration, workflow automation, and reusable component development.',
+        'Built reusable validation, configuration, and business rule frameworks to improve application integrity and configurable business workflows.',
+        'Enhanced UI rendering, state synchronization, and configuration persistence for reusable application components across enterprise applications.',
+        'Extended the reusable component framework with runtime configuration, template management, and testing capabilities.',
+        'Optimized application generation by 26% through parallel processing while delivering 50+ feature enhancements across three major product releases.'
       ],
     },
   ],
@@ -46,7 +48,7 @@ export const CONFIG = {
   education: [
     {
       degree: 'B.E. in Computer Science and Engineering',
-      school: 'University College of Engineering, Anna University, Tiruchirappalli',
+      school: 'University College of Engineering, Anna University, Tiruchirappalli, BIT Campus',
       period: 'Nov 2021 — June 2025',
       detail: 'CGPA: 7.98 / 10',
     },

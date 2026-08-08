@@ -389,3 +389,69 @@ html { scroll-behavior: smooth; scroll-padding-top: 96px; }
 .dialog-link:hover { color: var(--accent2); }
 .dialog-link-live { color: var(--ok); }
 .dialog-link-live:hover { color: var(--accent); }
+
+/* ---------- Scroll Progress Line ---------- */
+.scroll-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100vh;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.03);
+  pointer-events: none;
+}
+
+.scroll-progress-bar {
+  width: 100%;
+  background: linear-gradient(to bottom, var(--accent2), var(--accent), #ff00ea);
+  box-shadow: 0 0 15px var(--accent), 0 0 5px var(--accent2);
+  transition: height 0.1s ease-out;
+  position: relative;
+}
+
+.scroll-progress-tip {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 15px #fff, 0 0 30px var(--accent), 0 0 45px #ff00ea;
+  animation: sparkle 1.5s infinite alternate;
+}
+
+@keyframes sparkle {
+  0% { transform: translateX(-50%) scale(0.8); opacity: 0.7; }
+  100% { transform: translateX(-50%) scale(1.4); opacity: 1; filter: brightness(1.8); }
+}
+
+/* ---------- Active Section Header Glow ---------- */
+.section.active .section-title {
+  background: linear-gradient(90deg, var(--text) 0%, var(--accent) 50%, var(--accent2) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: header-shine 3s linear infinite;
+  filter: drop-shadow(0 0 8px rgba(232, 163, 61, 0.4));
+}
+
+.section.active .section-glyph {
+  color: var(--accent);
+  text-shadow: 0 0 12px var(--accent);
+  opacity: 1;
+}
+
+@keyframes header-shine {
+  from { background-position: 200% center; }
+  to { background-position: 0% center; }
+}
+
+/* Responsiveness for Scroll Line */
+@media (max-width: 600px) {
+  .scroll-progress-container { width: 3px; }
+  .scroll-progress-tip { width: 10px; height: 10px; bottom: -3px; }
+}

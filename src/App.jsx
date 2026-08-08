@@ -22,6 +22,7 @@ export default function App() {
   const sectionRefs = useRef({})
   const [navOpen, setNavOpen] = useState(false)
   const scrollPause = useRef(null)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   // Reorder controls are an authoring tool, not something a visitor should
   // see. Visit once with ?owner=1 in the URL and this browser remembers it;
@@ -170,6 +171,11 @@ export default function App() {
 
   useEffect(() => {
     const getActiveSection = () => {
+      // Bottom of page check
+      if ((window.innerHeight + window.scrollY) >= document.documentElement.scrollHeight - 50) {
+        return TABS[TABS.length - 1].id
+      }
+
       const anchorLine = 120
       const sections = TABS.map((tab) => {
         const el = document.getElementById(tab.id)
@@ -194,6 +200,12 @@ export default function App() {
     }
 
     const handleScroll = () => {
+      // Update scroll progress
+      const winScroll = window.scrollY
+      const height = document.documentElement.scrollHeight - window.innerHeight
+      const scrolled = height > 0 ? (winScroll / height) * 100 : 0
+      setScrollProgress(scrolled)
+
       if (scrollPause.current) return
       const next = getActiveSection()
       setActive((current) => (current === next ? current : next))
@@ -213,10 +225,15 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="scroll-progress-container">
+        <div className="scroll-progress-bar" style={{ height: `${scrollProgress}%` }}>
+          <div className="scroll-progress-tip" />
+        </div>
+      </div>
       <Nav tabs={TABS} active={active} navOpen={navOpen} setNavOpen={setNavOpen} onNavigate={scrollTo} />
 
       <main>
-        <section id="home" ref={el => sectionRefs.current.home = el} className="section hero">
+        <section id="home" ref={el => sectionRefs.current.home = el} className={`section hero ${active === 'home' ? 'active' : ''}`}>
           <Hero
             name={CONFIG.name}
             typed={typed}
@@ -232,11 +249,11 @@ export default function App() {
           />
         </section>
 
-        <section id="experience" ref={el => sectionRefs.current.experience = el}>
+        <section id="experience" ref={el => sectionRefs.current.experience = el} className={`section ${active === 'experience' ? 'active' : ''}`}>
           <Experience experience={CONFIG.experience} education={CONFIG.education} achievements={CONFIG.achievements} />
         </section>
 
-        <section id="projects" ref={el => sectionRefs.current.projects = el}>
+        <section id="projects" ref={el => sectionRefs.current.projects = el} className={`section ${active === 'projects' ? 'active' : ''}`}>
           <Projects
             status={status}
             error={error}
@@ -257,19 +274,19 @@ export default function App() {
           />
         </section>
 
-        <section id="skills" ref={el => sectionRefs.current.skills = el}>
+        <section id="skills" ref={el => sectionRefs.current.skills = el} className={`section ${active === 'skills' ? 'active' : ''}`}>
           <Skills skills={CONFIG.skills} />
         </section>
 
-        <section id="education" ref={el => sectionRefs.current.education = el}>
+        <section id="education" ref={el => sectionRefs.current.education = el} className={`section ${active === 'education' ? 'active' : ''}`}>
           <Education education={CONFIG.education} achievements={CONFIG.achievements} resumeUrl={CONFIG.resumeUrl} />
         </section>
 
-        <section id="about" ref={el => sectionRefs.current.about = el}>
+        <section id="about" ref={el => sectionRefs.current.about = el} className={`section ${active === 'about' ? 'active' : ''}`}>
           <About bio={CONFIG.bio} skills={CONFIG.skills} status={status} username={username} resumeUrl={CONFIG.resumeUrl} />
         </section>
 
-        <section id="contact" ref={el => sectionRefs.current.contact = el}>
+        <section id="contact" ref={el => sectionRefs.current.contact = el} className={`section ${active === 'contact' ? 'active' : ''}`}>
           <Contact email={CONFIG.email} linkedin={CONFIG.linkedin} instagram={CONFIG.instagram} twitter={CONFIG.twitter} resumeUrl={CONFIG.resumeUrl} username={username} />
         </section>
       </main>

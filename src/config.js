@@ -106,6 +106,7 @@ export const TABS = [
   { id: 'skills', label: 'skills.tsx' },
   { id: 'education', label: 'education.tsx' },
   { id: 'about', label: 'about.tsx' },
+  { id: 'contact', label: 'contact.tsx' },
 ]
 
 export const LANG_COLORS = {

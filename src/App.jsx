@@ -22,6 +22,7 @@ export default function App() {
   const sectionRefs = useRef({})
   const [navOpen, setNavOpen] = useState(false)
   const scrollPause = useRef(null)
+  const tipRef = useRef(null)
   const [scrollProgress, setScrollProgress] = useState(0)
 
   // Reorder controls are an authoring tool, not something a visitor should
@@ -163,9 +164,10 @@ export default function App() {
       if (scrollPause.current) {
         clearTimeout(scrollPause.current)
       }
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      const targetTop = target.getBoundingClientRect().top + window.pageYOffset - 80
+      window.scrollTo({ top: targetTop, behavior: 'smooth' })
       setActive(id)
-      scrollPause.current = setTimeout(() => { scrollPause.current = null }, 600)
+      scrollPause.current = setTimeout(() => { scrollPause.current = null }, 800)
     }
   }
 
@@ -227,7 +229,7 @@ export default function App() {
     <div className="app">
       <div className="scroll-progress-container">
         <div className="scroll-progress-bar" style={{ height: `${scrollProgress}%` }}>
-          <div className="scroll-progress-tip" />
+          <div className="scroll-progress-tip" ref={tipRef} />
         </div>
       </div>
       <Nav tabs={TABS} active={active} navOpen={navOpen} setNavOpen={setNavOpen} onNavigate={scrollTo} />

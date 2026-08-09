@@ -206,7 +206,7 @@ export default function App() {
       // Update scroll progress
       const winScroll = window.scrollY
       const height = document.documentElement.scrollHeight - window.innerHeight
-      const scrolled = height > 0 ? (winScroll / height) * 100 : 0
+      const scrolled = height > 0 ? Math.min(100, (winScroll / height) * 105) : 0
       setScrollProgress(scrolled)
 
       if (scrollPause.current) return

@@ -1,2 +1,14 @@
 node_modules
 dist
+
+# Local development and agent instructions
+.env
+.env.*
+.vscode/
+AGENTS.md
+GEMINI.md
+.github/copilot-instructions.md
+
+# Local screenshots and temporary exports
+/image.png
+/image1.png

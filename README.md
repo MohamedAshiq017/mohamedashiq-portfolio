@@ -19,18 +19,18 @@ A terminal/editor-themed developer portfolio, built from your real resume.
 Fully responsive and componentized — see `src/components/`, `src/hooks/`,
 and `src/lib/`.
 
-## 1. The two things still worth doing
+## 1. Update your content
 
-Open `src/config.js`:
+Open `src/config.js`. This is the main day-to-day content file:
 
-- `resumeUrl: '#'` — host your resume PDF somewhere (Google Drive, or even
-  a `resume.pdf` dropped in the `public/` folder here) and link it.
-- `featuredProject.repoName: 'MediLink'` — this only auto-links to your live
-  repo if a GitHub repo of that exact name exists and is public. If MediLink
-  isn't pushed to GitHub yet, either push it or swap `repoName` for one that is.
-  Set a repo's **Website** field on GitHub (or `homepage` via the API) to
-  make its "live demo" link show up automatically, both here and in the
-  project dialogs.
+- `bio`, `skills`, `experience`, `education`, and `achievements` are rendered
+  from arrays or objects. Add an item using the existing object shape and it
+  appears automatically; you do not need to hardcode a new JSX block.
+- `resumeUrl` points to the external resume file opened by the download loader.
+- `featuredProject` controls the spotlight card. Its `repoName` should match a
+  public GitHub repository if you want live repository details.
+- `pinnedRepos` controls the default project order. Unlisted repositories are
+  appended after the pinned ones, sorted by stars.
 
 Everything else — name, role, experience, education, achievements, skills,
 socials — is already filled in from your resume.
@@ -56,12 +56,28 @@ That sets a flag in that browser's `localStorage`, so the "reorder projects"
 button stays visible on that device from then on — you don't need to keep
 the query param around. It never appears for anyone visiting the plain URL.
 
-## 4. Launch it
+## 2. Deploy with Vercel (recommended)
 
-### Option A: GitHub Pages, fully automatic (recommended)
+This is a client-side Vite app and needs no server or environment variables.
+The simplest deployment is:
 
-Already included: `.github/workflows/deploy.yml` builds and publishes on
-every push to `main`.
+1. Push the repository to GitHub.
+2. Import the repository in Vercel.
+3. Keep the detected settings: build command `npm run build` and output
+  directory `dist`.
+4. Every push to the selected production branch creates a new deployment.
+
+You can also deploy from the terminal:
+
+```bash
+npm install -g vercel
+vercel
+```
+
+## 3. GitHub Pages alternative
+
+The repository includes `.github/workflows/deploy.yml`, which builds and
+publishes on pushes to `main`.
 
 ```bash
 git init
@@ -77,24 +93,20 @@ Then on GitHub: **Settings → Pages → Source → GitHub Actions**. Live at
 future push redeploys automatically. To use reorder mode on the live site,
 visit it once as `.../?owner=1`.
 
-### Option B: Vercel (fastest, easiest custom domain)
+## 4. Notes and limits
 
-```bash
-npm install -g vercel
-vercel
-```
-
-## Notes
-
-- GitHub API is unauthenticated client-side, capped at 60 requests/hour per
-  visitor IP — fine for a personal portfolio. The project dialog makes a
-  couple of extra calls per repo (languages, `package.json`, `Dockerfile`)
-  only when you actually open it, and fails silently if any of them 404s
-  or the limit is hit.
+- GitHub API requests are made in the visitor's browser and unauthenticated,
+  so the usual limit is about 60 requests per hour per visitor IP. If the
+  limit is reached, projects or project details may fail temporarily.
+- Only public repositories are available, and the main repository request is
+  limited to 100 repositories.
+- Opening a project dialog makes extra best-effort requests for languages,
+  dependencies, Dockerfile, Python dependency files, and README images.
+- README relative image fallback assumes the `master` branch; images in repos
+  using only `main` may not load.
 - `pinnedRepos` in `config.js` sets the default project order for every
   visitor. In-page drag/reorder only persists to the browser it was done in.
-- The contribution heatmap uses `ghchart.rshah.org` (this was pointed at a
-  dead domain before — now fixed) and the stats cards use the free
-  `github-readme-stats.vercel.app` service. Both degrade gracefully to a
-  small text fallback with a direct GitHub link if either is ever down or
-  rate-limited, so a hiccup there never breaks the rest of the page.
+- The GitHub heatmap and statistics use external image services and may be
+  unavailable independently of the portfolio.
+- Do not add API keys, passwords, or private tokens to this frontend. Vite
+  `VITE_*` variables are exposed to visitors and are not secret.

@@ -1,97 +1,89 @@
 # Mohamed Ashiq S — Portfolio
 
-A terminal/editor-themed developer portfolio, built from your real resume.
+Terminal-inspired developer portfolio for Mohamed Ashiq S, a backend-leaning
+full-stack developer focused on scalable applications, APIs, and practical
+developer tools.
 
-- **Home** — a compact typing terminal (fast, matrix-style scramble-decode)
-  plus a live "recent activity" stat instead of a raw follower count.
-- **Experience** — Vaken Technologies role rendered as a git log, education,
-  and a recognition block for the SIH 2023 win and NPTEL top-1% result.
-- **Projects** — a featured spotlight card for MediLink up top, then every
-  public non-fork repo pulled live from the GitHub API below it. Filter by
-  language. Click any card to open a detail dialog with live language/dep
-  badges, a Dockerfile preview when one exists, and a live-demo link when
-  the repo has one set. Drag-to-reorder is owner-only (see below).
-- **About** — real skills list + a live GitHub panel: contribution heatmap,
-  stats card, and top languages, fetched fresh on every page load.
-- **Contact** — icon + handle for GitHub, LinkedIn, X, Instagram and email.
-  Either the logo or the handle text opens the link.
+## Overview
 
-Fully responsive and componentized — see `src/components/`, `src/hooks/`,
-and `src/lib/`.
+The portfolio combines a developer-console visual style with live GitHub data.
+It presents professional experience, education, achievements, technical
+skills, featured work, public projects, and contact links in a responsive
+single-page experience.
 
-## 1. Update your content
+## Features
 
-Open `src/config.js`. This is the main day-to-day content file:
+- Terminal-style hero section with animated profile details
+- Experience timeline, education, and achievement sections
+- Featured MediLink project spotlight
+- Live public GitHub repository listing with language filters
+- Project detail dialogs with repository metadata and README images
+- GitHub activity, contribution, and language panels
+- Owner-only project reorder controls stored locally in the browser
+- Responsive layouts for desktop and mobile screens
+- Canvas-based multicolor scroll sparkler effect
 
-- `bio`, `skills`, `experience`, `education`, and `achievements` are rendered
-  from arrays or objects. Add an item using the existing object shape and it
-  appears automatically; you do not need to hardcode a new JSX block.
-- `resumeUrl` points to the external resume file opened by the download loader.
-- `featuredProject` controls the spotlight card. Its `repoName` should match a
-  public GitHub repository if you want live repository details.
-- `pinnedRepos` controls the default project order. Unlisted repositories are
-  appended after the pinned ones, sorted by stars.
+## Tech Stack
 
-Everything else — name, role, experience, education, achievements, skills,
-socials — is already filled in from your resume.
+- React
+- Vite
+- JavaScript
+- CSS
+- GitHub REST API
 
-## 2. Run locally
+## Content Configuration
+
+Personal portfolio content lives in [`src/config.js`](src/config.js). Update
+the existing objects and arrays there to change:
+
+- Profile details, bio, and social links
+- Skills
+- Experience
+- Education
+- Achievements
+- Featured project
+- Default GitHub project order
+
+Adding an item to the existing `experience`, `education`, `achievements`, or
+`skills` data automatically renders it through the corresponding component.
+
+## Local Development
 
 ```bash
 npm install
 npm run dev
 ```
-Opens at `http://localhost:5173`.
 
-## 3. Unlock reorder mode (owner only)
+The development server runs at `http://localhost:5173`.
 
-Drag-to-reorder is hidden from regular visitors on purpose. To turn it on
-for yourself, open the site once with `?owner=1` in the URL, e.g.:
-
-```
-http://localhost:5173/?owner=1
-```
-
-That sets a flag in that browser's `localStorage`, so the "reorder projects"
-button stays visible on that device from then on — you don't need to keep
-the query param around. It never appears for anyone visiting the plain URL.
-
-## 2. Deploy with Vercel (recommended)
-
-This is a client-side Vite app and needs no server or environment variables.
-The simplest deployment is:
-
-1. Push the repository to GitHub.
-2. Import the repository in Vercel.
-3. Keep the detected settings: build command `npm run build` and output
-  directory `dist`.
-4. Every push to the selected production branch creates a new deployment.
-
-You can also deploy from the terminal:
+Create a production build with:
 
 ```bash
-npm install -g vercel
-vercel
+npm run build
 ```
 
-## 3. GitHub Pages alternative
+## Deployment
 
-The repository includes `.github/workflows/deploy.yml`, which builds and
-publishes on pushes to `main`.
+This is a client-side Vite application and does not require environment
+variables or a server. It can be deployed directly to Vercel using:
 
-```bash
-git init
-git add .
-git commit -m "Initial portfolio"
-git branch -M main
-git remote add origin https://github.com/MohamedAshiq017/portfolio.git
-git push -u origin main
+```text
+Build command: npm run build
+Output directory: dist
 ```
 
-Then on GitHub: **Settings → Pages → Source → GitHub Actions**. Live at
-`https://mohamedashiq017.github.io/portfolio/` in about a minute. Every
-future push redeploys automatically. To use reorder mode on the live site,
-visit it once as `.../?owner=1`.
+The repository also includes a GitHub Pages workflow for deployments from the
+`main` branch.
+
+## GitHub Data
+
+Public repository and profile data is fetched in the browser from the GitHub
+REST API. The project works without authentication, but GitHub's unauthenticated
+rate limit applies. Private repositories are not displayed by the live project
+feed.
+
+Project detail information is loaded on demand and degrades gracefully when a
+repository file or external GitHub image service is unavailable.
 
 ## 4. Notes and limits
 

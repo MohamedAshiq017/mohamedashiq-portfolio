@@ -33,6 +33,14 @@ export default function ScrollSparkler({
     ctx.scale(dpr, dpr);
 
     const trackX = width / 2;
+    const sparkleColors = [
+      "255,245,220",
+      "245,197,110",
+      "212,150,70",
+      "255,42,109",
+      "0,230,255",
+      "114,255,85",
+    ];
 
     function spawnParticle(x, y) {
       particlesRef.current.push({
@@ -49,6 +57,7 @@ export default function ScrollSparkler({
         rot: Math.random() * Math.PI,
         rotSpeed: (Math.random() - 0.5) * 0.06,
         flicker: Math.random() * Math.PI * 2,
+        hue: sparkleColors[Math.floor(Math.random() * sparkleColors.length)],
       });
     }
 
@@ -101,12 +110,7 @@ export default function ScrollSparkler({
 
         const flick = 0.5 + Math.sin(p.flicker) * 0.5;
         const alpha = Math.max(0, p.life * flick);
-        const hue =
-          p.life > 0.65
-            ? "255,245,220"
-            : p.life > 0.3
-            ? color
-            : "212,150,70";
+        const hue = p.hue || color;
 
         // faint curved wisp trail behind the particle
         if (p.trail.length > 2) {

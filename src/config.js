@@ -84,7 +84,7 @@ export const CONFIG = {
     title: 'MediLink',
     tagline: 'end-to-end product build',
     description: 'Full-stack healthcare management platform with role-based scheduling, secure auth, and automated notifications — built end to end.',
-    stack: ['React', 'Node.js', 'Express', 'MongoDB', 'JWT', 'Cloudinary'],
+    stack: ['MongoDB', 'Express', 'React', 'Node.js', 'Cloudinary', 'JWT'],
     points: [
       'REST APIs for user management, appointment scheduling, and role-based operations',
       'JWT authentication, bcrypt password hashing, and role-based access control',

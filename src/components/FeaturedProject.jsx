@@ -1,3 +1,17 @@
+const STACK_ICON_SLUGS = {
+  React: 'react',
+  'Node.js': 'nodedotjs',
+  Express: 'express',
+  MongoDB: 'mongodb',
+  JWT: 'jsonwebtokens',
+  Cloudinary: 'cloudinary',
+}
+
+function stackIconUrl(name) {
+  const slug = STACK_ICON_SLUGS[name]
+  return slug ? `https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${slug}.svg` : null
+}
+
 export default function FeaturedProject({ project, liveRepo }) {
   if (!project) return null
   const link = liveRepo?.html_url || project.repoUrl || null
@@ -12,7 +26,12 @@ export default function FeaturedProject({ project, liveRepo }) {
         </div>
         <p className="spotlight-desc">{project.description}</p>
         <div className="spotlight-stack">
-          {project.stack.map(s => <span key={s} className="badge">{s}</span>)}
+          {project.stack.map(s => (
+            <span key={s} className="badge">
+              {stackIconUrl(s) && <img className="badge-icon" src={stackIconUrl(s)} alt="" aria-hidden="true" />}
+              {s}
+            </span>
+          ))}
         </div>
         <ul className="spotlight-points">
           {project.points.map((p, i) => (

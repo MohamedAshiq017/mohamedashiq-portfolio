@@ -147,7 +147,7 @@ html::-webkit-scrollbar { display: none; }
 /* ---------- Experience timeline ---------- */
 .timeline { display: flex; flex-direction: column; gap: 28px; position: relative; padding-left: 20px; }
 .timeline::before {
-  content: ''; position: absolute; left: 8px; top: 8px; bottom: 0;
+  content: ''; position: absolute; left: 4px; top: 8px; bottom: 0;
   width: 2px; background: var(--line);
 }
 .commit {
@@ -197,7 +197,29 @@ html::-webkit-scrollbar { display: none; }
 .spotlight-title { font-size: 19px; font-weight: 700; color: var(--text); }
 .spotlight-tag { font-size: 10px; background: var(--accent-soft); color: var(--accent); padding: 3px 10px; border-radius: 20px; }
 .spotlight-desc { color: var(--text-dim); font-size: 14px; line-height: 1.7; max-width: 60ch; margin: 0 0 16px; }
-.spotlight-stack { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.spotlight-stack { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 26px;
+  padding: 3px 9px;
+  border: 1px solid var(--accent2);
+  border-radius: 6px;
+  background: var(--bg-inset);
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1;
+  white-space: nowrap;
+}
+.badge-icon { width: 13px; height: 13px; filter: brightness(0) invert(1); }
+.badge:nth-child(1) { border-color: #61dafb; color: #9beaff; background: #61dafb18; }
+.badge:nth-child(2) { border-color: #83cd29; color: #b5ed72; background: #83cd2918; }
+.badge:nth-child(3) { border-color: #c7c7c7; color: #eeeeee; background: #c7c7c718; }
+.badge:nth-child(4) { border-color: #47a248; color: #9ee09e; background: #47a24818; }
+.badge:nth-child(5) { border-color: #e8a33d; color: #ffd58a; background: #e8a33d18; }
+.badge:nth-child(6) { border-color: #8c8cff; color: #c7c7ff; background: #8c8cff18; }
 .spotlight-points { list-style: none; margin: 0 0 18px; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .spotlight-points li { color: var(--text-dim); font-size: 13px; line-height: 1.6; }
 .spotlight-footer { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; font-size: 12px; }
@@ -505,7 +527,7 @@ html::-webkit-scrollbar { display: none; }
   .stat-num { font-size: 21px; }
 
   .timeline { gap: 22px; padding-left: 16px; }
-  .timeline::before { left: 6px; }
+  .timeline::before { left: 3px; }
   .commit { padding-left: 15px; }
   .commit::before { left: -22px; width: 13px; height: 13px; border-width: 3px; }
   .commit-line { gap: 6px; }
@@ -524,6 +546,9 @@ html::-webkit-scrollbar { display: none; }
   .spotlight-title { font-size: 17px; }
   .spotlight-desc { font-size: 13px; line-height: 1.6; }
   .spotlight-points li { font-size: 12px; line-height: 1.55; }
+  .spotlight-stack { gap: 6px; }
+  .badge { min-height: 25px; padding: 3px 8px; font-size: 10px; }
+  .badge-icon { width: 12px; height: 12px; }
 
   .controls-row { align-items: stretch; gap: 10px; margin-bottom: 20px; }
   .filter-row, .reorder-controls { gap: 6px; }

@@ -9,7 +9,7 @@ export default function About({ bio, skills, status, username, resumeUrl }) {
   useEffect(() => {
     let t
     if (running && progress < 100) {
-      t = setTimeout(() => setProgress(p => Math.min(100, p + Math.ceil((100 - p) / 6))), 120)
+      t = setTimeout(() => setProgress(p => Math.min(100, p + Math.ceil((100 - p) / 5))), 90)
     }
     if (progress === 100 && running) {
       setRunning(false)

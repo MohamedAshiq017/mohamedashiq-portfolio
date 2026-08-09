@@ -430,56 +430,48 @@ html::-webkit-scrollbar { display: none; }
 
 .scroll-progress-tip {
   position: absolute;
-  bottom: -15px;
-  left: -8px;
-  width: 20px;
-  height: 20px;
+  bottom: -20px;
+  left: -10px;
+  width: 24px;
+  height: 24px;
   border-radius: 50%;
-  background: radial-gradient(circle, #fff700 10%, #ffcc00 40%, transparent 70%);
-  filter: blur(1px);
-  animation: sparklerShake 0.1s linear infinite;
+  background: #fff;
+  box-shadow: 
+    0 0 10px #fff, 
+    0 0 20px #ffcc00, 
+    0 0 40px #ff9900;
+  animation: sparklerPulse 0.15s infinite alternate;
 }
 
 .scroll-progress-tip::after {
   content: '';
   position: absolute;
-  top: 10px;
+  top: 50%;
   left: 50%;
-  width: 100%;
-  height: 100%;
-  background: radial-gradient(circle, #ff0 20%, transparent 80%);
-  animation: sparklerBurst 0.4s ease-out infinite;
+  width: 4px;
+  height: 4px;
+  background: #ffcc00;
+  border-radius: 50%;
+  box-shadow: 
+    -10px -20px 0 #fff, 10px -20px 0 #ffcc00, 
+    -20px 0 0 #ff9900, 20px 0 0 #fff,
+    -10px 20px 0 #ffcc00, 10px 20px 0 #ff9900,
+    0 -30px 0 #fff, 0 30px 0 #ff9900;
+  animation: sparklerExplode 0.5s linear infinite;
   pointer-events: none;
 }
 
-@keyframes sparklerShake {
-  0% { transform: translate(0, 0); }
-  25% { transform: translate(1px, -1px); }
-  50% { transform: translate(-1px, 1px); }
-  75% { transform: translate(1px, 1px); }
-  100% { transform: translate(-1px, -1px); }
+@keyframes sparklerPulse {
+  from { transform: scale(0.8); opacity: 0.8; }
+  to { transform: scale(1.2); opacity: 1; }
 }
 
-@keyframes sparklerBurst {
-  0% { transform: scale(1); opacity: 1; box-shadow: 0 0 10px #ffcc00, 0 0 20px #ff00ff, 0 0 30px #00ffff; }
-  100% { transform: scale(3); opacity: 0; box-shadow: none; }
+@keyframes sparklerExplode {
+  0% { transform: scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: scale(2) rotate(45deg); opacity: 0; }
 }
 
-/* Add sparkling particles trailing */
-.scroll-progress-bar::after {
-  content: '✦';
-  position: absolute;
-  top: 100%;
-  left: -5px;
-  font-size: 10px;
-  color: #ffcc00;
-  animation: sparkleFall 1.5s linear infinite;
-}
-
-@keyframes sparkleFall {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(50px); opacity: 0; }
-}
+/* Removed scroll-progress-bar::after */
 
 /* ---------- Active Section Header Glow ---------- */
 .section.active .section-title {

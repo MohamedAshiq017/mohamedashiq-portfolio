@@ -145,9 +145,13 @@ html::-webkit-scrollbar { display: none; }
 .activity-repo { color: var(--accent2); }
 
 /* ---------- Experience timeline ---------- */
-.timeline { display: flex; flex-direction: column; gap: 28px; position: relative; }
+.timeline { display: flex; flex-direction: column; gap: 28px; position: relative; padding-left: 14px; }
+.timeline::before {
+  content: ''; position: absolute; left: 5px; top: 8px; bottom: 0;
+  width: 2px; background: var(--line);
+}
 .commit {
-  padding-left: 24px; border-left: 2px solid var(--line);
+  padding-left: 24px;
   position: relative;
 }
 .commit::before {
@@ -321,7 +325,7 @@ html::-webkit-scrollbar { display: none; }
   z-index: 10;
 }
 
-.contact.active .social-item {
+#contact.active .social-item {
   border-color: var(--accent);
   color: var(--accent);
   transform: translateY(-3px);

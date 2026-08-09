@@ -430,6 +430,10 @@ html::-webkit-scrollbar { display: none; }
   z-index: 1;
 }
 
+.scroll-sparkler-end {
+  transform: translateY(-28px);
+}
+
 @keyframes scrollGlowShift {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }

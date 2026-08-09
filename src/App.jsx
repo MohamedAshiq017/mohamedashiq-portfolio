@@ -11,6 +11,7 @@ import Skills from './components/Skills'
 import Projects from './components/Projects'
 import About from './components/About'
 import Contact from './components/Contact'
+import ScrollSparkler from './components/ScrollSparkler'
 
 const OWNER_KEY = 'portfolio_owner'
 
@@ -230,6 +231,7 @@ export default function App() {
       <div className="scroll-progress-container">
         <div className="scroll-progress-bar" style={{ height: `${scrollProgress}%` }}>
           <div className="scroll-progress-tip" ref={tipRef} />
+          <ScrollSparkler className="scroll-sparkler" width={76} height={160} tipY={90} />
         </div>
       </div>
       <Nav tabs={TABS} active={active} navOpen={navOpen} setNavOpen={setNavOpen} onNavigate={scrollTo} />

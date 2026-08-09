@@ -418,57 +418,20 @@ html::-webkit-scrollbar { display: none; }
   width: 100%;
   background: linear-gradient(180deg, #ff2a6d, #00e6ff, #72ff55);
   box-shadow: 0 0 12px #ff2a6d, 0 0 8px #00e6ff;
-  transition: height 0.1s ease-out;
   position: relative;
   animation: scrollGlowShift 1.2s linear infinite;
+}
+
+.scroll-sparkler {
+  position: absolute;
+  left: -36px;
+  top: calc(100% - 82px);
+  z-index: 1;
 }
 
 @keyframes scrollGlowShift {
   0% { filter: hue-rotate(0deg); }
   100% { filter: hue-rotate(360deg); }
-}
-
-.scroll-progress-tip {
-  position: absolute;
-  bottom: -20px;
-  left: -10px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 
-    0 0 10px #fff, 
-    0 0 20px #ffcc00, 
-    0 0 40px #ff9900;
-  animation: sparklerPulse 0.15s infinite alternate;
-}
-
-.scroll-progress-tip::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 4px;
-  height: 4px;
-  background: #ffcc00;
-  border-radius: 50%;
-  box-shadow: 
-    -10px -20px 0 #fff, 10px -20px 0 #ffcc00, 
-    -20px 0 0 #ff9900, 20px 0 0 #fff,
-    -10px 20px 0 #ffcc00, 10px 20px 0 #ff9900,
-    0 -30px 0 #fff, 0 30px 0 #ff9900;
-  animation: sparklerExplode 0.5s linear infinite;
-  pointer-events: none;
-}
-
-@keyframes sparklerPulse {
-  from { transform: scale(0.8); opacity: 0.8; }
-  to { transform: scale(1.2); opacity: 1; }
-}
-
-@keyframes sparklerExplode {
-  0% { transform: scale(1) rotate(0deg); opacity: 1; }
-  100% { transform: scale(2) rotate(45deg); opacity: 0; }
 }
 
 /* Removed scroll-progress-bar::after */
@@ -509,5 +472,4 @@ html::-webkit-scrollbar { display: none; }
 /* Responsiveness for Scroll Line */
 @media (max-width: 600px) {
   .scroll-progress-container { width: 3px; }
-  .scroll-progress-tip { width: 10px; height: 10px; bottom: -3px; }
 }

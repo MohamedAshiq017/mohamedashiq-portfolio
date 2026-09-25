@@ -442,26 +442,13 @@ html::-webkit-scrollbar { display: none; }
   box-shadow: 0 0 12px #ff2a6d, 0 0 8px #00e6ff;
   position: relative;
   border-radius: 0 0 6px 6px;
-  animation: scrollGlowShift 1.2s linear infinite;
+  overflow: visible;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), 52% 100%, 0 calc(100% - 12px));
 }
 
-.scroll-sparkler {
-  position: absolute;
-  left: calc(50% - 38px);
-  top: calc(100% - 90px);
-  z-index: 1;
+.scroll-progress-tip {
+  display: none;
 }
-
-.scroll-sparkler-end {
-  transform: translateY(-28px);
-}
-
-@keyframes scrollGlowShift {
-  0% { filter: hue-rotate(0deg); }
-  100% { filter: hue-rotate(360deg); }
-}
-
-/* Removed scroll-progress-bar::after */
 
 /* ---------- Active Section Header Glow ---------- */
 .section.active .section-title {

@@ -271,7 +271,7 @@ export default function App() {
             onDrop={handleDrop}
             onNudge={nudge}
             onReset={resetOrder}
-            featuredProject={CONFIG.featuredProject}
+            featuredProjects={CONFIG.featuredProjects}
             isOwner={isOwner}
           />
         </section>

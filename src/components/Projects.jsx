@@ -10,7 +10,7 @@ const MOBILE_PROJECT_LIMIT = 6
 export default function Projects({
   status, error, username, languages, langFilter, setLangFilter,
   repos, orderedRepos, reorderMode, setReorderMode,
-  onDragStart, onDrop, onNudge, onReset, featuredProject, isOwner,
+  onDragStart, onDrop, onNudge, onReset, featuredProjects, isOwner,
 }) {
   const [openRepo, setOpenRepo] = useState(null)
   const [isCompactMobile, setIsCompactMobile] = useState(false)
@@ -28,11 +28,9 @@ export default function Projects({
     return () => window.removeEventListener('resize', updateViewport)
   }, [])
 
-  const liveRepo = featuredProject
-    ? repos.find(r => r.name.toLowerCase() === featuredProject.repoName.toLowerCase())
-    : null
+  const featuredRepoNames = new Set(featuredProjects.map(project => project.repoName.toLowerCase()))
   const visibleRepos = orderedRepos.filter(
-    (repo) => !featuredProject || repo.name.toLowerCase() !== featuredProject.repoName.toLowerCase()
+    (repo) => !featuredRepoNames.has(repo.name.toLowerCase())
   )
 
   const displayedRepos = isCompactMobile && !showAllProjects
@@ -43,7 +41,7 @@ export default function Projects({
     <section id="projects" className="section">
       <SectionHeading>projects/</SectionHeading>
 
-      <FeaturedProject project={featuredProject} liveRepo={liveRepo} />
+      <FeaturedProject projects={featuredProjects} repos={repos} />
 
       <div className="controls-row">
         {languages.length > 1 && (

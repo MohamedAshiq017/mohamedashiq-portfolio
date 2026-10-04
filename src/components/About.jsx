@@ -1,23 +1,17 @@
-import { useState, useEffect } from 'react'
 import SectionHeading from './SectionHeading'
 
-export default function About({ bio, skills, status, username, resumeUrl }) {
+function resumeDownloadUrl(url) {
+  if (!url) return '#'
+  try {
+    const parsedUrl = new URL(url)
+    if (parsedUrl.hostname.endsWith('dropbox.com')) parsedUrl.searchParams.set('dl', '1')
+    return parsedUrl.href
+  } catch {
+    return url
+  }
+}
 
-  const [progress, setProgress] = useState(0)
-  const [running, setRunning] = useState(false)
-
-  useEffect(() => {
-    let t
-    if (running && progress < 100) {
-      t = setTimeout(() => setProgress(p => Math.min(100, p + Math.ceil((100 - p) / 5))), 90)
-    }
-    if (progress === 100 && running) {
-      setRunning(false)
-      // kick off resume download if a real URL is provided
-      try { if (resumeUrl && resumeUrl !== '#') window.open(resumeUrl, '_blank') } catch {}
-    }
-    return () => clearTimeout(t)
-  }, [running, progress])
+export default function About({ bio, resumeUrl }) {
 
   return (
     <section id="about" className="section">
@@ -25,27 +19,34 @@ export default function About({ bio, skills, status, username, resumeUrl }) {
       <div className="about-grid">
         <div className="about-bio">
           {bio.map((p, i) => <p key={i} className="bio-line">{p}</p>)}
-
         </div>
 
-        <div className="github-panel">
+        <div className="github-panel resume-terminal-panel">
           <div className="ls-header mono">$ ./resume_download.cron</div>
-          <div className="terminal" style={{ marginTop: 12 }}>
+          <div className="terminal resume-terminal">
             <div className="terminal-titlebar">
               <div className="dot dot-r" />
               <div className="dot dot-y" />
               <div className="dot dot-g" />
               <div className="terminal-title mono">resume-downloader</div>
             </div>
-            <div className={`terminal-body mono ${running ? 'decoding' : ''}`}>
-              <div className="line-prompt">$ curl -O "mohamed Ashiq S.pdf"</div>
-              <div className="line-output">{running ? `downloading... ${progress}%` : 'ready to run'}</div>
-              <div style={{ marginTop: 8 }}>
-                <button className="lookup-go" onClick={() => { if (!running) { setProgress(0); setRunning(true) } }}>{running ? 'running…' : 'download'}</button>
-              </div>
+            <div className="terminal-body mono">
+              <div className="line-prompt">$ curl -O "Mohamed-Ashiq-S.pdf"</div>
+              <div className="line-output">resume.pdf ready to download</div>
+              {resumeUrl && resumeUrl !== '#' && (
+                <a
+                  className="resume-download-button mono"
+                  href={resumeDownloadUrl(resumeUrl)}
+                  aria-label="Download resume PDF"
+                >
+                  <span className="resume-download-face" aria-hidden="true" />
+                  <span className="resume-download-icon" aria-hidden="true">↓</span>
+                  <span>download resume</span>
+                  <span className="resume-download-format">PDF ↗</span>
+                </a>
+              )}
             </div>
           </div>
-            
         </div>
       </div>
     </section>

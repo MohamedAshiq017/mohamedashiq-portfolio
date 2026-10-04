@@ -18,21 +18,27 @@ const SKILL_MAP = {
   PostgreSQL: ['postgresql', '4169E1', 'fff'],
   MongoDB: ['mongodb', '47A248', 'fff'],
   MySQL: ['mysql', '4479A1', 'fff'],
+  Redis: ['redis', 'D82C20', 'fff'],
   Git: ['git', 'F05032', 'fff'],
   Jenkins: ['jenkins', 'D24939', 'fff'],
+  Docker: ['docker', '2496ED', 'fff'],
   Maven: ['apachemaven', 'C71A36', 'fff'],
   Postman: ['postman', 'FF6C37', 'fff'],
   'AWS CodeCommit': ['amazonaws', '232F3E', 'fff'],
-  Claude: ['claude', '111111', 'fff'],
+  'AWS S3': ['amazons3', '569A31', 'fff'],
+  'AWS Lambda': ['awslambda', 'FF9900', '232F3E'],
+  'AWS CodeArtifact': ['amazonaws', '232F3E', 'fff'],
+  'Claude Code': ['claude', 'D97757', 'fff'],
+  Playwright: ['playwright', '2EAD33', 'fff'],
 }
 
 function getBadgeData(name) {
   const entry = SKILL_MAP[name]
   if (!entry) {
-    return { bg: '1c1f26', fg: 'fff', iconSlug: null }
+    return { accent: '7A8799', iconSlug: null }
   }
-  const [slug, bg, fg] = entry
-  return { bg, fg, iconSlug: slug }
+  const [slug, accent] = entry
+  return { accent, iconSlug: slug }
 }
 
 function skillBadgeIconUrl(slug) {
@@ -50,13 +56,13 @@ export default function Skills({ skills }) {
             <span className="ls-cat">{cat}/</span>
             <span className="ls-items">
               {items.map((item) => {
-                const { bg, fg, iconSlug } = getBadgeData(item)
+                const { accent, iconSlug } = getBadgeData(item)
                 return (
                   <span
                     key={item}
                     className="skill-badge"
                     title={item}
-                    style={{ backgroundColor: `#${bg}`, color: `#${fg}` }}
+                    style={{ '--skill-accent': `#${accent}` }}
                   >
                     {iconSlug && (
                       <img

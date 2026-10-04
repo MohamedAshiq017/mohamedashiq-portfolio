@@ -15,18 +15,17 @@ export const CONFIG = {
   resumeUrl: 'https://www.dropbox.com/scl/fi/61jgkix27b5kl63j635qj/Mohamed-Ashiq-S.pdf?rlkey=u70zltl07io1974euj09di6n3&st=y0yzj0ro&dl=0',                 // <-- link to a hosted copy of your resume PDF
 
   bio: [
-    "I'm Mohamed Ashiq, a backend-leaning full-stack developer based in Trichy, Tamil Nadu.",
-    "I enjoy building scalable software, solving backend challenges, and designing systems that are reliable, maintainable, and easy to extend.",
-    "Currently, I'm a Trainee Engineer at Vaken Technologies, where I develop features for an enterprise low-code platform, working on application configuration, reusable component frameworks, workflow automation, performance optimization, and enterprise software development.",
-    "Outside of work, I build full-stack projects, explore modern technologies, and continuously sharpen my software engineering skills."
+    "I'm Mohamed Ashiq, a full-stack developer based in Trichy, Tamil Nadu, with a backend focus and a strong interest in reliable, maintainable software.",
+    "At Vaken Technologies, I build features for an enterprise low-code platform using Vue.js and Spring Boot, spanning application configuration, workflows, reusable components, and data handling.",
+    "Outside of work, I build full-stack products and automate development workflows with Claude Code, MCP, and Playwright."
   ],
 
   skills: {
     languages: ['JavaScript', 'Java', 'Python', 'SQL'],
     frontend: ['React.js', 'Vue.js', 'Bootstrap', 'Tailwind CSS', 'EJS'],
     backend: ['Node.js', 'Express.js', 'Spring Boot', 'REST APIs'],
-    database: ['PostgreSQL', 'MongoDB', 'MySQL'],
-    tools: ['Git', 'Jenkins', 'Maven', 'Postman', 'AWS CodeCommit', 'Claude'],
+    database: ['PostgreSQL', 'MongoDB', 'MySQL', 'Redis'],
+    tools: ['Git', 'Jenkins', 'Docker', 'Maven', 'Postman', 'AWS CodeCommit', 'AWS S3', 'AWS Lambda', 'AWS CodeArtifact', 'Claude Code', 'Playwright'],
   },
 
   // Work experience, most recent first.
@@ -36,11 +35,12 @@ export const CONFIG = {
       company: 'Vaken Technologies',
       period: 'Aug 2025 — Present',
       points: [
-        'Developed core features for an enterprise low-code platform, enabling dynamic application configuration, workflow automation, and reusable component development.',
-        'Built reusable validation, configuration, and business rule frameworks to improve application integrity and configurable business workflows.',
-        'Enhanced UI rendering, state synchronization, and configuration persistence for reusable application components across enterprise applications.',
-        'Extended the reusable component framework with runtime configuration, template management, and testing capabilities.',
-        'Optimized application generation by 26% through parallel processing while delivering 50+ feature enhancements across three major product releases.'
+        'Built full-stack features for an enterprise low-code platform using Vue.js and Spring Boot, covering UI configuration, workflows, reusable components, data handling, and application generation.',
+        'Reduced master-screen data-fetch time from 30 seconds to 18 seconds with parallel processing and synchronized collections.',
+        'Resolved PostgreSQL persistence, cross-product configuration, and Redis caching issues across development, staging, and production.',
+        'Created runtime testing tools and live variable inspection for custom modules, and fixed production issues in code generation and stale configuration.',
+        'Automated localization of 1,000+ text entries with Claude Code and MCP tooling, using duplicate checks and Playwright-assisted workflows.',
+        'Owned work through requirements, implementation, testing, code review, CI/CD deployment, cross-environment verification, and release updates.'
       ],
     },
   ],
@@ -77,22 +77,58 @@ export const CONFIG = {
     },
   ],
 
-  // Featured spotlight card shown above the project grid.
-  featuredProject: {
-    repoName: 'APS',
-    repoUrl: 'https://github.com/MohamedAshiq017/APS',
-    title: 'MediLink',
-    tagline: 'end-to-end product build',
-    description: 'Full-stack healthcare management platform with role-based scheduling, secure auth, and automated notifications — built end to end.',
-    stack: ['MongoDB', 'Express', 'React', 'Node.js', 'Cloudinary', 'JWT'],
-    points: [
-      'REST APIs for user management, appointment scheduling, and role-based operations',
-      'JWT authentication, bcrypt password hashing, and role-based access control',
-      'Cloudinary for file storage and Nodemailer for automated email notifications',
-      'Appointment scheduling with conflict validation and business-rule enforcement',
-    ],
-    date: 'May 2025',
-  },
+  // Featured builds rotate above the project grid, following the resume order.
+  featuredProjects: [
+    {
+      repoName: 'billboards',
+      liveUrl: 'https://billboards-coral.vercel.app',
+      showSource: false,
+      title: 'Billboards',
+      tagline: 'digital billboard advertising platform',
+      description: 'Full-stack platform for businesses to manage advertisements, subscriptions, and digital displays, with a dedicated admin portal.',
+      stack: ['React', 'Node.js', 'Express', 'PostgreSQL', 'Prisma', 'JWT', 'Cloudinary', 'Socket.IO', 'Razorpay'],
+      points: [
+        'Managed business accounts, ad creative, subscriptions, and digital display assignments',
+        'Secured accounts with JWT, Google OAuth, and email OTP verification',
+        'Integrated Mailjet for verification, password-reset, and advertisement emails',
+        'Added Razorpay Test Mode payments with server-side HMAC verification',
+        'Stored advertisement media and profile images with Cloudinary',
+        'Synchronized advertisements, notifications, subscriptions, and displays in real time with Socket.IO',
+      ],
+      date: 'Aug 2025',
+    },
+    {
+      repoName: 'APS',
+      repoUrl: 'https://github.com/MohamedAshiq017/APS',
+      liveUrl: 'https://aps-frontend.vercel.app',
+      title: 'MediLink',
+      tagline: 'role-based healthcare appointment system',
+      description: 'Full-stack healthcare management platform for role-based user operations and appointment scheduling.',
+      stack: ['MongoDB', 'Express', 'React', 'Node.js', 'Cloudinary', 'JWT'],
+      points: [
+        'Designed REST APIs for user management, appointment scheduling, and role-based operations',
+        'Secured application resources with JWT, bcrypt password hashing, and role-based access control',
+        'Integrated Cloudinary for file storage and Nodemailer for automated email notifications',
+        'Built appointment workflows with conflict validation and business-rule enforcement',
+      ],
+      date: 'May 2025',
+    },
+    {
+      repoName: 'geoGuess',
+      repoUrl: 'https://github.com/MohamedAshiq017/geoGuess',
+      title: 'GeoGuess',
+      tagline: 'geography-based guessing game',
+      description: 'Interactive geography game with dynamic map rendering, answer validation, and data-driven map generation.',
+      stack: ['Python', 'Pandas'],
+      points: [
+        'Provided real-time visual feedback through dynamic map rendering',
+        'Tracked player progress with state management and answer validation',
+        'Generated playable maps from structured datasets with a Pandas utility',
+        'Kept game logic and data processing reusable as new content is added',
+      ],
+      date: 'Oct 2024',
+    },
+  ],
 
   // Default display order for your repos, by exact GitHub repo name.
   // Anything not listed here falls back to sorted-by-stars, appended after.

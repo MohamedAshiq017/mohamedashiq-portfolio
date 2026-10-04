@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react'
+
 const STACK_ICON_SLUGS = {
   React: 'react',
   'Node.js': 'nodedotjs',
@@ -12,14 +14,69 @@ function stackIconUrl(name) {
   return slug ? `https://cdn.jsdelivr.net/npm/simple-icons@latest/icons/${slug}.svg` : null
 }
 
-export default function FeaturedProject({ project, liveRepo }) {
+export default function FeaturedProject({ projects, repos }) {
+  const [activeIndex, setActiveIndex] = useState(0)
+  const shouldAutoRotate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  const [isHovered, setIsHovered] = useState(false)
+  const [isFocused, setIsFocused] = useState(false)
+
+  useEffect(() => {
+    if (projects.length < 2 || !shouldAutoRotate || isHovered || isFocused) return
+    const timer = window.setTimeout(() => {
+      setActiveIndex((activeIndex + 1) % projects.length)
+    }, 4000)
+    return () => window.clearTimeout(timer)
+  }, [activeIndex, isFocused, isHovered, projects.length, shouldAutoRotate])
+
+  useEffect(() => {
+    if (activeIndex >= projects.length) setActiveIndex(0)
+  }, [activeIndex, projects.length])
+
+  const project = projects[activeIndex]
   if (!project) return null
-  const link = liveRepo?.html_url || project.repoUrl || null
+  const liveRepo = repos.find(repo => repo.name.toLowerCase() === project.repoName.toLowerCase())
+  const sourceLink = project.showSource === false ? null : liveRepo?.html_url || project.repoUrl || null
+  const demoLink = liveRepo?.homepage || project.liveUrl || null
 
   return (
-    <div className="spotlight">
-      <div className="spotlight-eyebrow mono">featured build</div>
-      <div className="spotlight-card">
+    <div
+      className="spotlight"
+      role="region"
+      aria-roledescription="carousel"
+      aria-label="Featured builds"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsFocused(true)}
+      onBlur={event => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsFocused(false)
+      }}
+    >
+      <div className="spotlight-toolbar">
+        <div className="spotlight-eyebrow mono">featured build</div>
+        {projects.length > 1 && (
+          <div className="spotlight-controls" role="group" aria-label="Featured build navigation">
+            <button
+              type="button"
+              className="spotlight-control"
+              aria-label="Previous featured build"
+              title="Previous featured build"
+              onClick={() => setActiveIndex(index => (index - 1 + projects.length) % projects.length)}
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              className="spotlight-control"
+              aria-label="Next featured build"
+              title="Next featured build"
+              onClick={() => setActiveIndex(index => (index + 1) % projects.length)}
+            >
+              →
+            </button>
+          </div>
+        )}
+      </div>
+      <div className="spotlight-card" role="group" aria-roledescription="slide" aria-label={`${activeIndex + 1} of ${projects.length}`}>
         <div className="spotlight-head">
           <span className="spotlight-title">{project.title}</span>
           <span className="spotlight-tag mono">{project.tagline}</span>
@@ -41,12 +98,9 @@ export default function FeaturedProject({ project, liveRepo }) {
         <div className="spotlight-footer mono">
           <span className="muted">{project.date}</span>
           <span className="spotlight-links">
-            {link && <a href={link} target="_blank" rel="noopener noreferrer" className="spotlight-link">↗ view source</a>}
-            {(liveRepo?.homepage || project.liveUrl || project.repoUrl) && (
-              <a href={liveRepo?.homepage || project.liveUrl || project.repoUrl} target="_blank" rel="noopener noreferrer" className="spotlight-link spotlight-link-live">↗ live demo</a>
-            )}
-            {!link && !liveRepo?.homepage && !project.liveUrl && (
-              <span className="muted small">add a live link in config.featuredProject once hosted</span>
+            {sourceLink && <a href={sourceLink} target="_blank" rel="noopener noreferrer" className="spotlight-link">↗ view source</a>}
+            {demoLink && (
+              <a href={demoLink} target="_blank" rel="noopener noreferrer" className="spotlight-link spotlight-link-live">↗ live demo</a>
             )}
           </span>
         </div>

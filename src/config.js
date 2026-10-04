@@ -12,7 +12,7 @@ export const CONFIG = {
   linkedin: 'https://linkedin.com/in/mohamedashiq17',
   instagram: 'https://instagram.com/mohamedashiqs',
   twitter: 'https://x.com/Md_Ashiq17',
-  resumeUrl: 'https://www.dropbox.com/scl/fi/61jgkix27b5kl63j635qj/Mohamed-Ashiq-S.pdf?rlkey=u70zltl07io1974euj09di6n3&st=y0yzj0ro&dl=0',                 // <-- link to a hosted copy of your resume PDF
+  resumeUrl: 'https://www.dropbox.com/scl/fi/61jgkix27b5kl63j635qj/Mohamed-Ashiq-S.pdf?rlkey=u70zltl07io1974euj09di6n3&st=y0yzj0ro&dl=0',
 
   bio: [
     "I'm Mohamed Ashiq, a full-stack developer based in Trichy, Tamil Nadu, with a backend focus and a strong interest in reliable, maintainable software.",
@@ -95,7 +95,7 @@ export const CONFIG = {
         'Stored advertisement media and profile images with Cloudinary',
         'Synchronized advertisements, notifications, subscriptions, and displays in real time with Socket.IO',
       ],
-      date: 'Aug 2025',
+      date: 'Aug 2026',
     },
     {
       repoName: 'APS',

@@ -1,16 +1,5 @@
 import SectionHeading from './SectionHeading'
 
-function resumeDownloadUrl(url) {
-  if (!url) return '#'
-  try {
-    const parsedUrl = new URL(url)
-    if (parsedUrl.hostname.endsWith('dropbox.com')) parsedUrl.searchParams.set('dl', '1')
-    return parsedUrl.href
-  } catch {
-    return url
-  }
-}
-
 export default function About({ bio, resumeUrl }) {
 
   return (
@@ -36,7 +25,7 @@ export default function About({ bio, resumeUrl }) {
               {resumeUrl && resumeUrl !== '#' && (
                 <a
                   className="resume-download-button mono"
-                  href={resumeDownloadUrl(resumeUrl)}
+                  href={resumeUrl}
                   aria-label="Download resume PDF"
                 >
                   <span className="resume-download-face" aria-hidden="true" />

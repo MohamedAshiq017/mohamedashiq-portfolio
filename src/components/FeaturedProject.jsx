@@ -17,16 +17,15 @@ function stackIconUrl(name) {
 export default function FeaturedProject({ projects, repos }) {
   const [activeIndex, setActiveIndex] = useState(0)
   const shouldAutoRotate = !window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  const [isHovered, setIsHovered] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
 
   useEffect(() => {
-    if (projects.length < 2 || !shouldAutoRotate || isHovered || isFocused) return
+    if (projects.length < 2 || !shouldAutoRotate || isFocused) return
     const timer = window.setTimeout(() => {
       setActiveIndex((activeIndex + 1) % projects.length)
     }, 4000)
     return () => window.clearTimeout(timer)
-  }, [activeIndex, isFocused, isHovered, projects.length, shouldAutoRotate])
+  }, [activeIndex, isFocused, projects.length, shouldAutoRotate])
 
   useEffect(() => {
     if (activeIndex >= projects.length) setActiveIndex(0)
@@ -44,8 +43,6 @@ export default function FeaturedProject({ projects, repos }) {
       role="region"
       aria-roledescription="carousel"
       aria-label="Featured builds"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onFocus={() => setIsFocused(true)}
       onBlur={event => {
         if (!event.currentTarget.contains(event.relatedTarget)) setIsFocused(false)
@@ -76,6 +73,11 @@ export default function FeaturedProject({ projects, repos }) {
           </div>
         )}
       </div>
+      {projects.length > 1 && shouldAutoRotate && (
+        <div className={`spotlight-progress ${isFocused ? 'spotlight-progress-paused' : ''}`} aria-hidden="true">
+          <span key={`${activeIndex}-${isFocused}`} className="spotlight-progress-fill" />
+        </div>
+      )}
       <div className="spotlight-card" role="group" aria-roledescription="slide" aria-label={`${activeIndex + 1} of ${projects.length}`}>
         <div className="spotlight-head">
           <span className="spotlight-title">{project.title}</span>
